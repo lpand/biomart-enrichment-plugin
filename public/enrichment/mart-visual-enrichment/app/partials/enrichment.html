@@ -1,0 +1,21 @@
+<div class="container" ng-controller="EnrichmentCtrl">
+    <div class="row">
+        <div class="mve-species">
+            <h2>Input Species Available</h2>
+            <select class="form-control mve-select" ng-model="selectedSpecies" ng-options="s.displayName for s in species" ng-change="onSelect()"/>
+        </div>
+    </div>
+
+    <div class="row" ng-controller="SetsCtrl">
+        <p>Select one of these inputs</p>
+        <tabset type="pills" justified="true">
+            <tab ng-repeat="o in options" heading="o.name">
+                <div ng-repeat="f in o.filters" mve-filter="f"></div>
+            </tab>
+        </tabset>
+    </div>
+
+    <!-- <div class="mve-background"></div>
+    <div class="mve-cutoff"></div>
+    <div class="mve-annotations"></div> -->
+</div>
