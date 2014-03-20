@@ -4,8 +4,8 @@ describe("MartVisualCtrl", function () {
     var $scope, $rootScope, $location, mkController, $httpBackend, $routeParams,
         expect = chai.expect, ds, datasetsRes, martsRes, config;
 
-    beforeEach(module("martVisualEnrichment.controllers"));
-    beforeEach(inject(function ($injector) {
+    beforeEach("Load controllers module", module("martVisualEnrichment.controllers"));
+    beforeEach("Set up", inject(function ($injector) {
         $rootScope = $injector.get("$rootScope");
         $httpBackend = $injector.get("$httpBackend");
         $location = $injector.get("$location");
