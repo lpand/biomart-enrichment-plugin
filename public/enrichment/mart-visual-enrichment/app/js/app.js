@@ -8,6 +8,36 @@ var app = angular.module("martVisualEnrichment", [
     "martVisualEnrichment.directives"
 ]);
 
+app.config(["$routeProvider", "$locationProvider",
+            function routes ($routeProvider, $locationProvider) {
+
+    // This route gets species for the EnrichmentCtrl
+    var home = {
+        controller: "SpeciesCtrl",
+        templateUrl: "partials/enrichment.html",
+        resolve: {
+            species: ["$routeParams", "$location", "bmservice",
+                     function species ($params, $loc, bm) {
+                return bm.marts($params.gui).then(function (res) {
+                    var mart = res.data.marts[0], config = null;
+
+                    return bm.datasets(config = mart.config).then(function (res) {
+                        return [res, config];
+                    });
+                });
+            }]
+        }
+    }
+
+
+    $routeProvider
+        .when("/gui/:gui", home)
+        .otherwise("/");
+
+    $locationProvider.html5Moder(true);
+
+}]);
+
 // app.run(["$templateCache",function($templateCache) {
 //     $templateCache.put("partials/table-of-results.html", document.getElementById("table-of-results.html").textContent);
 //     $templateCache.put("partials/vis.html", document.getElementById("vis.html").textContent);

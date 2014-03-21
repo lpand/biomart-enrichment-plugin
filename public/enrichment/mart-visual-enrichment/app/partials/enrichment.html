@@ -5,7 +5,7 @@
             <select class="form-control mve-select"
                     ng-model="selectedSpecies"
                     ng-options="s.displayName for s in species"
-                    ng-change="enr.select(selectedSpecies)"/>
+                    ng-change="enr.updateSpecies(selectedSpecies)"/>
         </div>
     </div>
 

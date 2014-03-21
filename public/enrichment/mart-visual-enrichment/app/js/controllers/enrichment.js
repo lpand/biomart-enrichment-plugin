@@ -3,32 +3,28 @@
 
 var app = angular.module("martVisualEnrichement.controllers");
 
-app.controller("EnrichmentCtrl", ["$scope", "$routeParams", "$location", "bmservice",
-    function EnrichmentCtrl($scope, $routeParams, $loc, bm) {
+app.controller("EnrichmentCtrl", ["$scope", "$location", "bmservice",
+    function EnrichmentCtrl($scope, $loc, bm) {
 
-    var gui = $routeParams.gui, mart;
-
-    bm.marts(gui).then(function (res) {
-        var data = res.data;
-        mart = data.marts[0].name;
-        $scope.config = data.marts[0].config;
-        return bm.datasets(mart);
-    }).then(function (res) {
-        var data = res.data;
-        $scope.species = data[mart];
-        // Last param says we want filters too
-        return bm.containers($scope.species[0].name, $scope.config, true);
-    }).then(function (res) {
-        $scope.containers = res.data.containers;
-    }).catch(function (reason) {
-        $log.error("Enrichment controller: "+reason);
+    $scope.$on("$locationChangeSuccess", function searchChange () {
+        var s = $loc.search();
+        if (s.species !== $scope.species) {
+            containersUpdatePathPromise($scope.species = s.species, s.config);
+        }
     });
 
-    this.select = function (species) {
-        bm.containers(species.name, $scope.config, true).then(function (res) {
-            $scope.containers = res.data.containers;
-        });
+
+    function containersUpdatePathPromise(species, config) {
+        bm.containers(species.name, config, true).
+            then(function getContainers (res) {
+                $scope.containers = res.data.containers;
+            }).
+            catch(function (reason) {
+                $log.error("Species controller: "+reason);
+            });
     }
+
+    // TODO: set default paramters for enrichment like cutoff=1, bonferroni=excluded...
 
 }]);
 
