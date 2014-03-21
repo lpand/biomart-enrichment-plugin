@@ -15,7 +15,7 @@ describe("bmservice service", function () {
 
         $httpBackend.when("GET", "/martservice/gui.json?name=Enrichment").
             respond([]);
-        $httpBackend.when("GET", "/martservice/datasets/mapped.json?mart=my_mart").
+        $httpBackend.when("GET", "/martservice/datasets.json?config=my_cfg").
             respond([]);
         $httpBackend.when("GET", "/martservice/containers.json?datasets=my_dataset&config=my_conf").
             respond([]);
@@ -40,8 +40,8 @@ describe("bmservice service", function () {
     });
 
     it ("#datasets(mart) requests all the datasets of a mart", function () {
-        bm.datasets("my_mart");
-        $httpBackend.expectGET("/martservice/datasets/mapped.json?mart=my_mart");
+        bm.datasets("my_cfg");
+        $httpBackend.expectGET("/martservice/datasets.json?config=my_cfg");
         $httpBackend.flush();
     });
 

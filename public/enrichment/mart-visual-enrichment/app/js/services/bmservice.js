@@ -25,9 +25,8 @@ service("bmservice",
     };
 
 
-    // datasets/mapped.json\?mart\=gene_ensembl_config_3_1_2
-    this.datasets = function datasets(mart) {
-        var iUrl = url + "/datasets/mapped.json?mart=" + mart
+    this.datasets = function datasets(config) {
+        var iUrl = url + "/datasets.json?config=" + config
         return $http.get(iUrl, baseOpts);
     };
 
