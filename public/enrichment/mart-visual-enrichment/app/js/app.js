@@ -19,10 +19,12 @@ app.config(["$routeProvider", "$locationProvider",
             species: ["$routeParams", "$location", "bmservice",
                      function species ($params, $loc, bm) {
                 return bm.marts($params.gui).then(function (res) {
-                    var mart = res.data.marts[0], config = null;
-
-                    return bm.datasets(config = mart.config).then(function (res) {
-                        return [res, config];
+                    var mart = res.data.marts[0];
+                    return bm.datasets(mart.config).then(function (species) {
+                        var query = $loc.search();
+                        if (! "species" in query) $loc.search("species", species[0]);
+                        if (! "config" in query) $loc.search("config", mart.config);
+                        return species;
                     });
                 });
             }]

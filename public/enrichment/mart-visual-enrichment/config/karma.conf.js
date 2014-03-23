@@ -8,11 +8,25 @@ module.exports = function(config){
         "app/lib/jquery.js",
         "test/lib/angular/angular-mocks.js",
         "test/lib/chai.js",
-        "app/js/**/*.js",
-        "test/unit/services/**/*.js",
-        "test/unit/controllers/**/*.js",
-        "test/unit/directives/**/*.js",
-        "app/partials/*.html"
+        "test/lib/sinon.js",
+        "test/unit/fixtures.js",
+        "app/js/services.js",
+        "app/js/services/find-bio-element.js",
+        "app/js/controllers.js",
+        "app/js/controllers/species.js",
+        "app/js/controllers/enrichment.js",
+        "app/js/directives.js",
+        "app/js/directives/mv-species.js",
+        "app/partials/**/*.html",
+        "test/unit/services/find-bio-element-spec.js",
+        "test/unit/controllers/species*.js",
+        "test/unit/controllers/enrichment*.js",
+        "test/unit/directives/mv-species-spec.js",
+        // "app/js/**/*.js",
+        // "test/unit/services/**/*.js",
+        // "test/unit/controllers/**/*.js",
+        // "test/unit/directives/**/*.js",
+        // "app/partials/*.html"
     ],
 
     exclude : [
@@ -31,7 +45,6 @@ module.exports = function(config){
         "karma-chrome-launcher",
         "karma-firefox-launcher",
         "karma-safari-launcher",
-        "karma-jasmine",
         "karma-mocha-reporter",
         "karma-mocha",
         "karma-html2js-preprocessor"

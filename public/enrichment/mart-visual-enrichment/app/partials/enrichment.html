@@ -1,21 +1,19 @@
-<div class="container" ng-controller="EnrichmentCtrl as enr">
-    <div class="row">
-        <div class="mve-species">
-            <h2>Input Species Available</h2>
-            <select class="form-control mve-select"
-                    ng-model="selectedSpecies"
-                    ng-options="s.displayName for s in species"
-                    ng-change="enr.updateSpecies(selectedSpecies)"/>
-        </div>
+<div class="container">
+    <div class="row" ng-controller="SpeciesCtrl">
+        <mv-species species="species"/>
     </div>
 
-    <div class="row" ng-controller="SetsCtrl">
-        <p>Select one of these inputs</p>
-        <tabset type="pills" justified="true">
-            <tab ng-repeat="o in options" heading="o.name">
-                <div ng-repeat="f in o.filters" mve-filter="f"></div>
-            </tab>
-        </tabset>
+    <div class="row" ng-controller="EnrichmentCtrl as enr">
+
+        <!-- <div class="row" ng-controller="SetsCtrl">
+            <p>Select one of these inputs</p>
+            <tabset type="pills" justified="true">
+                <tab ng-repeat="o in options" heading="o.name">
+                    <div ng-repeat="f in o.filters" mve-filter="f"></div>
+                </tab>
+            </tabset>
+        </div> -->
+
     </div>
 
     <!-- <div class="mve-background"></div>
