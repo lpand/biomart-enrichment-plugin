@@ -2,7 +2,7 @@
 "use strict";
 
 var app = angular.module("martVisualEnrichment", [
-    "martVisual",
+    "ngRoute",
     "martVisualEnrichment.services",
     "martVisualEnrichment.controllers",
     "martVisualEnrichment.directives"
@@ -14,36 +14,36 @@ app.config(["$routeProvider", "$locationProvider",
     // This route gets species for the EnrichmentCtrl
     var home = {
         controller: "SpeciesCtrl",
-        templateUrl: "partials/enrichment.html",
+        templateUrl: "mart-visual-enrichment/app/partials/enrichment.html",
         resolve: {
-            species: ["$routeParams", "$location", "bmservice",
-                     function species ($params, $loc, bm) {
-                return bm.marts($params.gui).then(function (res) {
-                    var mart = res.data.marts[0];
-                    return bm.datasets(mart.config).then(function (species) {
-                        var query = $loc.search();
-                        if (! "species" in query) $loc.search("species", species[0]);
-                        if (! "config" in query) $loc.search("config", mart.config);
-                        return species;
-                    });
+            species: ["$route", "$location", "bmservice",
+                     function species ($route, $loc, bm) {
+                return bm.marts($route.current.params.gui)
+                .then(function (res) {
+                    return res.data.marts[0];
+                }).then(function (mart) {
+                    if (! ("config" in $loc.search())) $loc.search("config", mart.config);
+                    return bm.datasets(mart.config);
+                }).then(function (res) {
+                    var species = res.data;
+                    if (! ("species" in $loc.search())) $loc.search("species", species[0].name);
+                    return species;
                 });
             }]
         }
     }
 
+    // $locationProvider.html5Mode(true);
 
     $routeProvider
         .when("/gui/:gui", home)
-        .otherwise("/");
-
-    $locationProvider.html5Moder(true);
+        // .otherwise("/");
 
 }]);
 
 // app.run(["$templateCache",function($templateCache) {
-//     $templateCache.put("partials/table-of-results.html", document.getElementById("table-of-results.html").textContent);
-//     $templateCache.put("partials/vis.html", document.getElementById("vis.html").textContent);
-//     $templateCache.put("partials/mart-visual-enrichment.html", document.getElementById("mart-visual-enrichment.html").textContent);
+//     $templateCache.put("partials/enrichment.html", document.getElementById("enrichment.html").textContent);
+//     $templateCache.put("partials/species.html", document.getElementById("species.html").textContent);
 // }]);
 
 })(angular);
