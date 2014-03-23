@@ -3,31 +3,33 @@
 
 var app = angular.module("martVisualEnrichment.controllers");
 
-app.controller("EnrichmentCtrl", ["$scope", "$location", "bmservice", "findBioElement",
-    function EnrichmentCtrl($scope, $loc, bm, find) {
+app.controller("EnrichmentCtrl", ["$scope", "$location", "$log", "bmservice", "findBioElement",
+    function EnrichmentCtrl($scope, $loc, $log, bm, find) {
 
     var reqs = ["cutoff", "bonferroni", "regions", "sets", "background", "upstream", "downstream", "gene_type", "gene_limit", "homolog"];
 
-    $scope.$on("$locationChangeSuccess", function searchChange () {
+    searchChange();
+    $scope.$on("$locationChangeSuccess", searchChange);
+
+    function searchChange () {
         var s = $loc.search(), changed = false;
-        if (s.species !== $scope.enSpeciesName) {
+        if (s.species && s.species !== $scope.enSpeciesName) {
             $scope.enSpeciesName = s.species;
             changed = true;
         }
-        if (s.config !== $scope.enConfig) {
+        if (s.config && s.config !== $scope.enConfig) {
             $scope.enConfig = s.config;
             changed = true;
         }
         if (changed) {
             containersUpdatePathPromise($scope.enSpeciesName, $scope.enConfig);
         }
-    });
-
+    }
 
     function containersUpdatePathPromise(species, config) {
         return bm.containers(species, config, true).
             then(function getContainers (res) {
-                var c = $scope.containers = res.data.containers;
+                var c = $scope.containers = res.data;
                 $scope.enElements = findElements($scope.containers);
             }).
             catch(function (reason) {
