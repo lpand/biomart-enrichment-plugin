@@ -28,3 +28,7 @@ input[type=text] {
 .mve-select {
     margin: 20px auto 20px auto;
 }
+
+.mve-species h2 {
+    color: #E94E77;
+}

@@ -34,8 +34,8 @@ app.factory("findBioElement", function() {
         var c, q = [this.coll];
         while (q.length) {
             var c = q.shift();
-            this.inspectAttrs(c.attributes, this.funcs);
-            this.inspectFilters(c.filters, this.funcs);
+            if (c.attributes) this.inspectAttrs(c.attributes, this.funcs);
+            if (c.filters) this.inspectFilters(c.filters, this.funcs);
             for (var i = 0; i < c.containers.length; ++i) {
                 q.push(c.containers[i]);
             }
