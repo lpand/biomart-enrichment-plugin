@@ -7,7 +7,7 @@ describe("mvSpecies directive", function () {
 
     beforeEach(inject(function ($injector) {
         var $templateCache = $injector.get("$templateCache");
-        $templateCache.put('partials/species.html', window.__html__['app/partials/species.html']);
+        $templateCache.put('mart-visual-enrichment/app/partials/species.html', window.__html__['app/partials/species.html']);
         var $compile = $injector.get("$compile");
         $rootScope = $injector.get("$rootScope");
         $scope = $rootScope.$new();
@@ -49,6 +49,17 @@ describe("mvSpecies directive", function () {
         $loc.search("species", species[1].name);
         scope.$apply();
         scope.selectedSpecies.should.eql(species[1]);
+    });
+
+
+    it ("should select the first species if the query url paramters is not a species", function () {
+        $loc.search("species", species[0].name);
+        var d = mkDir();
+        var scope = d.scope();
+        scope.selectedSpecies.should.eql(species[0]);
+        $loc.search("species", "boooom");
+        scope.$apply();
+        scope.selectedSpecies.should.eql(species[0]);
     });
 
 

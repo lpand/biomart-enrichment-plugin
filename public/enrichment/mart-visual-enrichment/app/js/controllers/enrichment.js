@@ -3,47 +3,89 @@
 
 var app = angular.module("martVisualEnrichment.controllers");
 
-app.controller("EnrichmentCtrl", ["$scope", "$location", "$log", "bmservice", "findBioElement",
-    function EnrichmentCtrl($scope, $loc, $log, bm, find) {
+app.controller("EnrichmentCtrl", ["$scope", "$location", "$log", "bmservice", "findBioElement", EnrichmentCtrl]);
 
-    var reqs = ["cutoff", "bonferroni", "regions", "sets", "background", "upstream", "downstream", "gene_type", "gene_limit", "homolog"];
+function EnrichmentCtrl($scope, $loc, $log, bm, find) {
 
-    searchChange();
-    $scope.$on("$locationChangeSuccess", searchChange);
+    var ctrl = this;
+    ctrl.$loc = $loc;
+    ctrl.$log = $log;
+    ctrl.bm = bm;
+    ctrl.find = find;
+    ctrl.init();
+    ctrl.searchChange();
+    $scope.$on("$locationChangeSuccess", ctrl.searchChange.bind(ctrl));
 
-    function searchChange () {
-        var s = $loc.search(), changed = false;
-        if (s.species && s.species !== $scope.enSpeciesName) {
-            $scope.enSpeciesName = s.species;
+}
+
+EnrichmentCtrl.prototype = {
+    init: function init() {
+        var ctrl = this;
+        ctrl.reqs = ["cutoff", "bonferroni", "regions", "sets", "background", "upstream", "downstream", "gene_type",
+                     "gene_limit", "homolog"];
+        ctrl.enElementValues = {};
+    },
+
+    searchChange: function searchChange () {
+        var ctrl = this, s = ctrl.$loc.search(), changed = false;
+        if (s.species && s.species !== ctrl.enSpeciesName) {
+            ctrl.enSpeciesName = s.species;
             changed = true;
         }
-        if (s.config && s.config !== $scope.enConfig) {
-            $scope.enConfig = s.config;
+        if (s.config && s.config !== ctrl.enConfig) {
+            ctrl.enConfig = s.config;
             changed = true;
         }
         if (changed) {
-            containersUpdatePathPromise($scope.enSpeciesName, $scope.enConfig);
+            ctrl.containersUpdatePathPromise(ctrl.enSpeciesName, ctrl.enConfig);
         }
-    }
+    },
 
-    function containersUpdatePathPromise(species, config) {
-        return bm.containers(species, config, true).
+    containersUpdatePathPromise: function containersUpdatePathPromise(species, config) {
+        var ctrl = this;
+        return ctrl.bm.containers(species, config, true).
             then(function getContainers (res) {
-                var c = $scope.containers = res.data;
-                $scope.enElements = findElements($scope.containers);
+                var c = ctrl.containers = res.data;
+                ctrl.enElements = ctrl.findElements(ctrl.containers);
             }).
             catch(function (reason) {
-                $log.error("Species controller: "+reason);
+                ctrl.$log.error("Species controller: "+reason);
             });
-    }
+    },
 
-
-    function findElements(coll) {
-        var finder = find(coll).addFunctions(reqs);
+    findElements: function findElements(coll) {
+        var ctrl = this;
+        var finder = ctrl.find(coll).addFunctions(ctrl.reqs);
         return finder.find();
-    }
+    },
 
-}]);
+
+    getElements: function getElements(elmFunc, set) {
+        var ctrl = this, elms = null, elmMap = ctrl.enElements[elmFunc];
+        return elmMap && elmMap[set]? elmMap[set] : [];
+    },
+
+
+    // It returns the first filter with that elmFunc.
+    // The first filter is the first one met with breadth visit of the
+    // containers tree.
+    getFilter: function getFilter(elmFunc) {
+        var fls = this.getElements(elmFunc, "filters");
+        return fls.length ? fls[0] : null;
+    },
+
+
+    // This returns all the attributes with elmFunc function
+    getAttributes: function getFilter(elmFunc) {
+        return this.getElements(elmFunc, "attributes");
+    },
+
+
+    set: function (funcName, funcValue) {
+        var ctrl = this, k = funcName, v = funcValue;
+        ctrl.enElementValues[k] = v;
+    }
+}
 
 
 

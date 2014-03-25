@@ -23,7 +23,7 @@ describe("findBioElement service", function () {
     });
 
     describe("#find()", function () {
-        it ("looks gets elements with proper function property", function () {
+        it ("gets elements with proper function property", function () {
             var finder = find(conts);
             finder.addFunctions(reqs);
             var els = finder.find();

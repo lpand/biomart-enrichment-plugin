@@ -111,6 +111,129 @@ var fixtures = {
             ]
         }
     },
+    reqs: function () {
+        return {
+            annotation: {
+                attributes: [
+                  {
+                      "name": "Gene Ontology (GO)",
+                      "displayName": "Gene Ontology (GO)",
+                      "description": "",
+                      "isHidden": false,
+                      "linkURL": "",
+                      "selected": false,
+                      "value": "",
+                      "attributes": [],
+                      "dataType": "STRING",
+                      "function": "annotation",
+                      "parent": "Gene List"
+                  },
+                  {
+                    "name": "Reactome Pathways",
+                    "displayName": "Reactome Pathways",
+                    "description": "",
+                    "isHidden": false,
+                    "linkURL": "",
+                    "selected": false,
+                    "value": "",
+                    "attributes": [],
+                    "dataType": "STRING",
+                    "function": "annotation",
+                    "parent": "Pathways"
+                  },
+                  {
+                    "name": "OMIMDiseases",
+                    "displayName": "OMIM Diseases",
+                    "description": "",
+                    "isHidden": false,
+                    "linkURL": "",
+                    "selected": false,
+                    "value": "",
+                    "attributes": [],
+                    "dataType": "STRING",
+                    "function": "annotation",
+                    "parent": "Disease"
+                  }
+              ],
+              filters: []
+            },
+            background: {
+                attributes: [],
+                filters: [
+                  {
+                    "name": "sets_list_copy1",
+                    "displayName": "Paste your gene list here [Max 500 advised]",
+                    "description": "sets_list",
+                    "type": "singleSelectUpload",
+                    "isHidden": false,
+                    "qualifier": "",
+                    "required": false,
+                    "function": "background",
+                    "attribute": "",
+                    "filters": [],
+                    "values": [],
+                    "parent": "DefineBackground",
+                    "dependsOn": ""
+                  }
+              ]
+            },
+            sets: {
+              attributes: [],
+              filters:[
+                {
+                  "name": "sets_list_copy",
+                  "displayName": "Paste your gene list here [Max 500 advised]",
+                  "description": "sets_list",
+                  "type": "singleSelectUpload",
+                  "isHidden": false,
+                  "qualifier": "",
+                  "required": false,
+                  "function": "sets",
+                  "attribute": "",
+                  "filters": [],
+                  "values": [],
+                  "parent": "gene__filters",
+                  "dependsOn": ""
+                },
+                {
+                  "name": "chromosomal_region_copy",
+                  "displayName": "Multiple Chromosomal Regions (Chr:Start:End:Strand)",
+                  "description": "chromosomal_region",
+                  "type": "upload",
+                  "isHidden": false,
+                  "qualifier": "",
+                  "required": false,
+                  "function": "sets",
+                  "attribute": "",
+                  "filters": [],
+                  "values": [],
+                  "parent": "Region list",
+                  "dependsOn": ""
+                }
+            ]
+            },
+            cutoff: {
+                attributes: [],
+                filters: [
+                {
+                  "name": "pvalue_filter",
+                  "displayName": "P-Value",
+                  "description": "",
+                  "type": "text",
+                  "isHidden": false,
+                  "qualifier": "",
+                  "required": false,
+                  "function": "cutoff",
+                  "attribute": "transcript_count",
+                  "filters": [],
+                  "values": [],
+                  "parent": "Cut Off",
+                  "dependsOn": ""
+                }
+            ]
+            }
+        }
+    },
     containers: function () {
         return {
               "name": "root",

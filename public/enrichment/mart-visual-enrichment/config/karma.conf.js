@@ -50,7 +50,7 @@ module.exports = function(config){
         "karma-html2js-preprocessor"
     ],
 
-    reporters: ["progress"],
+    reporters: ["mocha"],
 
     junitReporter : {
         outputFile: "test_out/unit.xml",

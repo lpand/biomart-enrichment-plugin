@@ -5,14 +5,83 @@
 
     <div class="row" ng-controller="EnrichmentCtrl as enr">
 
-        <!-- <div class="row" ng-controller="SetsCtrl">
-            <p>Select one of these inputs</p>
+        <div class="row">
+            <h2>Select one of these inputs</h2>
             <tabset type="pills" justified="true">
-                <tab ng-repeat="o in options" heading="o.name">
-                    <div ng-repeat="f in o.filters" mve-filter="f"></div>
+                <tab heading="List of Genes">
+                    <div mv-filter="enr.getFilter('sets')"
+                         ng-model="setsFilterValue"
+                         ng-change="enr.set('sets', setsFilterValue)">
+                     </div>
+                </tab>
+                <tab heading="BED File">
+                    <div class="col-md-8"
+                         mv-filter="enr.getFilter('bed_regions')"
+                         ng-model="bedFilterValue"
+                         ng-change="enr.set('bed_regions', bedFilterValue)">
+                     </div>
+                     <div class="col-md-4">
+                        <div mv-filter="enr-getFilter('downstream')"
+                             ng-model="downstreamFilterValue"
+                             ng-change="enr.set('downstream', downstreamFilterValue)">
+                         </div>
+                         <div mv-filter="enr-getFilter('upstream')"
+                              ng-model="upstreamFilterValue"
+                              ng-change="enr.set('upstream', upstreamFilterValue)">
+                         </div>
+                     </div>
                 </tab>
             </tabset>
-        </div> -->
+        </div>
+
+        <div class="row">
+            <h2>Background is optional</h2>
+            <tabset type="pills" justified="true">
+                <tab heading="Background">
+                    <div mv-filter="enr.getFilter('background')"
+                         ng-model="backgroundFilterValue"
+                         ng-change="enr.set('background', backgroundFilterValue)">
+                     </div>
+                </tab>
+            </tabset>
+        </div>
+
+        <div class="row">
+            <h2>Output filtering</h2>
+            <tabset type="pills" justified="true">
+                <tab heading="Cutoff">
+                    <div mv-filter="enr.getFilter('cutoff')"
+                         ng-model="cutoffFilterValue"
+                         ng-change="enr.set('cutoff', cutoffFilterValue)">
+                     </div>
+                     <div mv-filter="enr.getFilter('gene_type')"
+                         ng-model="geneTypeFilterValue"
+                         ng-change="enr.set('gene_type', geneTypeFilterValue)">
+                     </div>
+                     <div mv-filter="enr.getFilter('gene_limit')"
+                         ng-model="geneLimitFilterValue"
+                         ng-change="enr.set('gene_limit', geneLimitFilterValue)">
+                     </div>
+                     <div mv-filter="enr.getFilter('homolog')"
+                         ng-model="homologFilterValue"
+                         ng-change="enr.set('homolog', homologFilterValue)">
+                     </div>
+                </tab>
+            </tabset>
+        </div>
+
+        <div class="row">
+            <h2>Annotations</h2>
+            <tabset type="pills" justified="true">
+                <tab heading="Annotations">
+                    <div ng-repeat="a in enr.getAttributes('annotations')"
+                         mv-bio-attribute="a"
+                         ng-model="annotationNames"
+                         ng-change="enr.set('annotation', annotationNames)">
+                     </div>
+                </tab>
+            </tabset>
+        </div>
 
     </div>
 
