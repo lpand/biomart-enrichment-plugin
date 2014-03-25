@@ -3,25 +3,34 @@
 
 var app = angular.module("martVisualEnrichment.controllers");
 
-app.controller("EnrichmentCtrl", ["$scope", "$location", "$log", "bmservice", "findBioElement", EnrichmentCtrl]);
+app.controller("EnrichmentCtrl",
+               ["$scope",
+                "$location",
+                "$log",
+                "bmservice",
+                "findBioElement",
+                "queryFactory",
+                EnrichmentCtrl]);
 
-function EnrichmentCtrl($scope, $loc, $log, bm, find) {
+function EnrichmentCtrl($scope, $loc, $log, bm, find, queryFactory) {
 
     var ctrl = this;
     ctrl.$loc = $loc;
     ctrl.$log = $log;
     ctrl.bm = bm;
     ctrl.find = find;
+    ctrl.queryFactory = queryFactory;
     ctrl.init();
     ctrl.searchChange();
     $scope.$on("$locationChangeSuccess", ctrl.searchChange.bind(ctrl));
+    $scope.$on("enrichment.query", ctrl.submit.bind(ctrl));
 
 }
 
 EnrichmentCtrl.prototype = {
     init: function init() {
         var ctrl = this;
-        ctrl.reqs = ["cutoff", "bonferroni", "regions", "sets", "background", "upstream", "downstream", "gene_type",
+        ctrl.reqs = ["cutoff", "bonferroni", "bed_regions", "sets", "background", "upstream", "downstream", "gene_type",
                      "gene_limit", "homolog"];
         ctrl.enElementValues = {};
     },
@@ -84,6 +93,31 @@ EnrichmentCtrl.prototype = {
     set: function (funcName, funcValue) {
         var ctrl = this, k = funcName, v = funcValue;
         ctrl.enElementValues[k] = v;
+        queryFactory.elements(ctrl.enElementValues);
+    },
+
+
+    // getAllElements: function getAllElements() {
+    //     return this.enElementValues;
+    // },
+
+    validate: function validate() {
+        var ctrl = this;
+        if (ctrl.queryValidator(ctrl.enElementValues)) {
+            ctrl.buildQuery(ctrl.enElementValues);
+        } else {
+            ctrl.showError(ctrl.queryValidator.errMessage());
+        }
+    },
+
+    submit: function submit() {
+        var ctrl = this;
+        if (ctrl.queryValidator(ctrl.enElementValues)) {
+            ctrl.buildQuery(ctrl.enElementValues);
+            ctrl.nextStep();
+        } else {
+            ctrl.showError(ctrl.queryValidator.errMessage());
+        }
     }
 }
 
