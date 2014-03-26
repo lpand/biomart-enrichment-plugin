@@ -94,19 +94,20 @@ app.directive("textFilter",
 }]);
 
 app.directive("booleanFilter",
-          ["queryBuilder", function (queryBuilder) {
+          [function booleanFilter () {
     return {
         restrict: "E",
         templateUrl: "partials/boolean-filter.html",
         controller: function ($scope, $element, $attrs, $transclude) {},
         scope: {
-            filter: "="
+            mvChange: "&onChange"
         },
         link: function (scope, iElement, attrs) {
-            scope.$on("enrichment.results", function () {
-                var v = scope.choice;
-                queryBuilder.addFilter(scope.filter.name, !!v);
-            });
+            scope.filter = scope.$parent.$eval(attrs.filter);
+            scope.set = function set (value) {
+                scope.onChange({value: value});
+            }
+
         }
     }
 }]);

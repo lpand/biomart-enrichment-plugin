@@ -33,6 +33,11 @@ EnrichmentCtrl.prototype = {
         ctrl.reqs = ["cutoff", "bonferroni", "bed_regions", "sets", "background", "upstream", "downstream", "gene_type",
                      "gene_limit", "homolog"];
         ctrl.enElementValues = {};
+        queryFactory.elements(ctrl.enElementValues);
+        // These are the keys of the enElementValues map.
+        // In this way there is not need to use watchers to sync the value of
+        // filters.
+        ctrl.defineEnrProperties(ctrl.reqs);
     },
 
     searchChange: function searchChange () {
@@ -93,31 +98,17 @@ EnrichmentCtrl.prototype = {
     set: function (funcName, funcValue) {
         var ctrl = this, k = funcName, v = funcValue;
         ctrl.enElementValues[k] = v;
-        queryFactory.elements(ctrl.enElementValues);
     },
 
 
-    // getAllElements: function getAllElements() {
-    //     return this.enElementValues;
-    // },
-
-    validate: function validate() {
+    defineEnrProperties: function (keys) {
         var ctrl = this;
-        if (ctrl.queryValidator(ctrl.enElementValues)) {
-            ctrl.buildQuery(ctrl.enElementValues);
-        } else {
-            ctrl.showError(ctrl.queryValidator.errMessage());
-        }
-    },
-
-    submit: function submit() {
-        var ctrl = this;
-        if (ctrl.queryValidator(ctrl.enElementValues)) {
-            ctrl.buildQuery(ctrl.enElementValues);
-            ctrl.nextStep();
-        } else {
-            ctrl.showError(ctrl.queryValidator.errMessage());
-        }
+        angular.forEach(keys, function (r) {
+            Object.defineProperty(ctrl, r, {
+                get: function () { return this.enElementValues[r] },
+                set: function (value) { this.set(r, value) }
+            });
+        });
     }
 }
 

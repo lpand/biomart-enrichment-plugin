@@ -1,21 +1,27 @@
 ;(function (angular) {
 "use strict";
 
-var app = angular.module("martVisualEnrichment.directives",
-                         ["$log", function mvFilter ($log) {
+var app = angular.module("martVisualEnrichment.directives");
+
+app.directive("mvFilter", ["$parse", function mvFilter ($parse) {
     return {
         restrict: "A",
-        controller: "FilterCtrl",
-        require: "?ngModel",
-        transclude: true,
-        template: "<form ng-transclude></form>"
-        link: function (scope, elm, attrs, ngModel) {
-            if (!ngModel) return;
+        templateUrl: "mart-visual-enrichment/app/partials/filter.html",
+        compile: function compile (elem, attrs) {
+
+            function link (scope, elm, attrs) {
+                var filter = scope.$eval(attrs.mvFilter),
+                    setValue = $parse(attrs.mvFilterModel).assign;
+
+                if (!setValue) return;
+
+                scope.setValue = function (value) {
+                    setValue(scope, value);
+                }
+            }
         }
 
-
     }
-
 
  }]);
 

@@ -1,0 +1,6 @@
+<div ng-switch="type">
+    <boolean-filter filter="filter" mv-change="setValue(value)" ng-switch-when="boolean"/>
+    <text-filter filter="filter" mv-change="setValue(value)" ng-switch-when="text" />
+    <upload-filter filter="filter" mv-change="setValue(value)" ng-switch-when="upload" />
+    <single-select-upload-filter filter="filter" mv-change="setValue(value)" ng-switch-when="singleSelectUpload" />
+</div>
