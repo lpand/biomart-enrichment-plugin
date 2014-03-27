@@ -181,20 +181,48 @@ var fixtures = {
               attributes: [],
               filters:[
                 {
-                  "name": "sets_list_copy",
-                  "displayName": "Paste your gene list here [Max 500 advised]",
-                  "description": "sets_list",
-                  "type": "singleSelectUpload",
-                  "isHidden": false,
+              "name": "sets_list_copy1",
+              "displayName": "Paste your gene list here [Max 500 advised]",
+              "description": "sets_list",
+              "type": "singleSelectUpload",
+              "isHidden": false,
+              "qualifier": "",
+              "required": false,
+              "attribute": "",
+              "values": [],
+              "filters": [
+                {
+                  "name": "hgnc_symbol_5",
+                  "displayName": "HGNC symbol(s) [e.g. ZFY]",
+                  "description": "",
+                  "type": "upload",
+                  "isHidden": true,
                   "qualifier": "",
                   "required": false,
-                  "function": "sets",
-                  "attribute": "",
-                  "filters": [],
+                  "attribute": "hgnc_symbol",
                   "values": [],
-                  "parent": "gene__filters",
-                  "dependsOn": ""
+                  "filters": [],
+                  "dependsOn": "",
+                  "parent": "DefineBackground"
                 },
+                {
+                  "name": "ensembl_gene_id_5",
+                  "displayName": "Ensembl Gene ID(s) [e.g. ENSG00000139618]",
+                  "description": "Ensembl Stable ID of the Gene",
+                  "type": "upload",
+                  "isHidden": true,
+                  "qualifier": "",
+                  "required": false,
+                  "attribute": "ensembl_gene_id",
+                  "values": [],
+                  "filters": [],
+                  "dependsOn": "",
+                  "parent": "DefineBackground"
+                }
+              ],
+              "dependsOn": "",
+              "parent": "DefineBackground"
+            },
                 {
                   "name": "chromosomal_region_copy",
                   "displayName": "Multiple Chromosomal Regions (Chr:Start:End:Strand)",

@@ -9,21 +9,18 @@ app.controller("EnrichmentCtrl",
                 "$log",
                 "bmservice",
                 "findBioElement",
-                "queryFactory",
                 EnrichmentCtrl]);
 
-function EnrichmentCtrl($scope, $loc, $log, bm, find, queryFactory) {
+function EnrichmentCtrl($scope, $loc, $log, bm, find) {
 
     var ctrl = this;
     ctrl.$loc = $loc;
     ctrl.$log = $log;
     ctrl.bm = bm;
     ctrl.find = find;
-    ctrl.queryFactory = queryFactory;
     ctrl.init();
     ctrl.searchChange();
     $scope.$on("$locationChangeSuccess", ctrl.searchChange.bind(ctrl));
-    $scope.$on("enrichment.query", ctrl.submit.bind(ctrl));
 
 }
 
@@ -33,11 +30,6 @@ EnrichmentCtrl.prototype = {
         ctrl.reqs = ["cutoff", "bonferroni", "bed_regions", "sets", "background", "upstream", "downstream", "gene_type",
                      "gene_limit", "homolog"];
         ctrl.enElementValues = {};
-        queryFactory.elements(ctrl.enElementValues);
-        // These are the keys of the enElementValues map.
-        // In this way there is not need to use watchers to sync the value of
-        // filters.
-        ctrl.defineEnrProperties(ctrl.reqs);
     },
 
     searchChange: function searchChange () {
@@ -98,18 +90,18 @@ EnrichmentCtrl.prototype = {
     set: function (funcName, funcValue) {
         var ctrl = this, k = funcName, v = funcValue;
         ctrl.enElementValues[k] = v;
-    },
-
-
-    defineEnrProperties: function (keys) {
-        var ctrl = this;
-        angular.forEach(keys, function (r) {
-            Object.defineProperty(ctrl, r, {
-                get: function () { return this.enElementValues[r] },
-                set: function (value) { this.set(r, value) }
-            });
-        });
     }
+
+
+    // defineEnrProperties: function (keys) {
+    //     var ctrl = this;
+    //     angular.forEach(keys, function (r) {
+    //         Object.defineProperty(ctrl, r, {
+    //             get: function () { return this.enElementValues[r] },
+    //             set: function (value) { this.set(r, value) }
+    //         });
+    //     });
+    // }
 }
 
 

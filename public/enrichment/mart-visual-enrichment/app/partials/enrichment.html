@@ -14,21 +14,17 @@
             <h2>Select one of these inputs</h2>
             <tabset type="pills" justified="true">
                 <tab heading="List of Genes">
-                    <div mv-filter="enr.getFilter('sets')"
-                         mv-filter-model="ctrl.setsFilterValue">
-                     </div>
+                    <div mv-filter="enr.getFilter('sets')">
+                    </div>
                 </tab>
                 <tab heading="BED File">
                     <div class="col-md-8"
-                         mv-filter="enr.getFilter('bed_regions')"
-                         ng-filter-model="ctrl.bedFilterValue">
+                         mv-filter="enr.getFilter('bed_regions')">
                      </div>
                      <div class="col-md-4">
-                        <div mv-filter="enr.getFilter('downstream')"
-                             mv-filter-model="downstreamFilterValue">
+                        <div mv-filter="enr.getFilter('downstream')">
                          </div>
-                         <div mv-filter="enr.getFilter('upstream')"
-                              mv-filter-model="ctrl.upstreamFilterValue">
+                         <div mv-filter="enr.getFilter('upstream')">
                          </div>
                      </div>
                 </tab>
@@ -39,8 +35,7 @@
             <h2>Background is optional</h2>
             <tabset type="pills" justified="true">
                 <tab heading="Background">
-                    <div mv-filter="enr.getFilter('background')"
-                         mv-filter-model="enr.set('background', value)">
+                    <div mv-filter="enr.getFilter('background')">
                      </div>
                 </tab>
             </tabset>
@@ -50,19 +45,13 @@
             <h2>Output filtering</h2>
             <tabset type="pills" justified="true">
                 <tab heading="Cutoff">
-                    <div mv-filter="enr.getFilter('cutoff')"
-                         ng-filter-model="ctrl.cutoffFilterValue">
+                    <div mv-filter="enr.getFilter('cutoff')">
                      </div>
-                     <div mv-filter="enr.getFilter('gene_type')"
-                         ng-filter-model="geneTypeFilterValue">
+                     <div mv-filter="enr.getFilter('gene_type')">
                      </div>
-                     <div mv-filter="enr.getFilter('gene_limit')"
-                         ng-model="geneLimitFilterValue"
-                         ng-change="enr.set('gene_limit', geneLimitFilterValue)">
+                     <div mv-filter="enr.getFilter('gene_limit')">
                      </div>
-                     <div mv-filter="enr.getFilter('homolog')"
-                         ng-model="homologFilterValue"
-                         ng-change="enr.set('homolog', homologFilterValue)">
+                     <div mv-filter="enr.getFilter('homolog')">
                      </div>
                 </tab>
             </tabset>
@@ -73,9 +62,7 @@
             <tabset type="pills" justified="true">
                 <tab heading="Annotations">
                     <div ng-repeat="a in enr.getAttributes('annotations')"
-                         mv-bio-attribute="a"
-                         ng-model="annotationNames"
-                         ng-change="enr.set('annotation', annotationNames)">
+                         mv-attribute="a">
                      </div>
                 </tab>
             </tabset>

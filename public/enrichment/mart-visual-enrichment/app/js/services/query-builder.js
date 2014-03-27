@@ -55,12 +55,16 @@ app.service("queryBuilder",
     this.attrs = {};
     this.xml = "";
 
-    this.addFilter = function (name, value) {
+    this.setFilter = function (name, value) {
         this.filters[name] = value;
     };
 
-    this.addAttribute = function (name) {
+    this.setAttribute = function (name) {
         this.attrs[name] = name;
+    }
+
+    this.rmAttribute = function (name) {
+        delete this.attrs[name];
     }
 
     this.build = function (dataset, config) {
@@ -75,23 +79,23 @@ app.service("queryBuilder",
 
 
 // Set the proper filters, attributes, dataset and config for the query
-app.service("queryFactory", ["queryBuilder", function (qb) {
+// app.service("queryFactory", ["queryBuilder", function (qb) {
 
-    this.elmMap = null;
+//     this.elmMap = null;
 
-    this.elements = function setElms(elmMap) {
-        if (elmMap) {
-            this.elmMap = elmMap;
-            return this;
-        } else {
-            return this.elmMap
-        }
-    }
+//     this.elements = function setElms(elmMap) {
+//         if (elmMap) {
+//             this.elmMap = elmMap;
+//             return this;
+//         } else {
+//             return this.elmMap
+//         }
+//     }
 
-    this.create = function create() {
+//     this.create = function create() {
 
-    }
+//     }
 
-}]);
+// }]);
 
 })(angular);
