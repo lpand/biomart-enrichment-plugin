@@ -9,7 +9,7 @@ app.directive("mvAttribute", [
         return {
             restrict: "A",
             scope: true,
-            templateUrl: "mart-visual-enrichment/app/partials/mv-attribute.html",
+            templateUrl: "mart-visual-enrichment/app/partials/attribute.html",
             link: function (scope, elem, attrs) {
                 scope.attr = scope.$parent.$eval(attrs.mvAttribute);
                 scope.value = scope.attr.selected ? scope.attr.name : null;

@@ -24,8 +24,8 @@ describe("mvAttribute", function () {
         $scope = $rootScope.$new();
 
         $templateCache.put(
-            'mart-visual-enrichment/app/partials/mv-attribute.html',
-            window.__html__['app/partials/mv-attribute.html']);
+            'mart-visual-enrichment/app/partials/attribute.html',
+            window.__html__['app/partials/attribute.html']);
         attr = {
             "name": "Gene Ontology (GO)",
             "displayName": "Gene Ontology (GO)",
