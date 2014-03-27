@@ -40,7 +40,7 @@
 <script src="mart-visual-enrichment/app/js/directives.js"></script>
 <script src="mart-visual-enrichment/app/js/directives/mv-species.js"></script>
 <script src="mart-visual-enrichment/app/js/directives/filters.js"></script>
-<script src="mart-visual-enrichment/app/js/directives/mv-filters.js"></script>
+<script src="mart-visual-enrichment/app/js/directives/mv-filter.js"></script>
 <script src="mart-visual-enrichment/app/js/directives/mv-attribute.js"></script>
 
 <script src="mart-visual-enrichment/app/lib/cytoscape.js"></script>

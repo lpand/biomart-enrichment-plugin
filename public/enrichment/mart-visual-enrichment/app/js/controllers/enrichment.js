@@ -52,10 +52,10 @@ EnrichmentCtrl.prototype = {
         return ctrl.bm.containers(species, config, true).
             then(function getContainers (res) {
                 var c = ctrl.containers = res.data;
-                ctrl.enElements = ctrl.findElements(ctrl.containers);
+                ctrl.enElementValues = ctrl.findElements(ctrl.containers);
             }).
             catch(function (reason) {
-                ctrl.$log.error("Species controller: "+reason);
+                ctrl.$log.error("Enrichment controller: "+reason);
             });
     },
 
@@ -67,7 +67,9 @@ EnrichmentCtrl.prototype = {
 
 
     getElements: function getElements(elmFunc, set) {
-        var ctrl = this, elms = null, elmMap = ctrl.enElements[elmFunc];
+        var ctrl = this;
+        var elms = null;
+        var elmMap = ctrl.enElementValues[elmFunc];
         return elmMap && elmMap[set]? elmMap[set] : [];
     },
 
