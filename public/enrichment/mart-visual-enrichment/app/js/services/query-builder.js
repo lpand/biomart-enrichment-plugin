@@ -75,6 +75,13 @@ app.service("queryBuilder",
         return this.xml;
     }
 
+    this.getElements = function getEls() {
+        return {
+            filters: this.filters,
+            attributes: this.attrs
+        }
+    }
+
 }]);
 
 

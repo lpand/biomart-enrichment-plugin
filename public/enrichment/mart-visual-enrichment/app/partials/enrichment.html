@@ -4,12 +4,13 @@
         <mv-species class="col-md-8" species="{{species}}"></mv-species>
         <div class="query-buttons col-md-4" ng-cotroller="QueryCtrl as ctrl">
             <button class="btn btn-default" ng-click="ctrl.submit()">Submit</button>
-            <button class="btn btn-default" ng-click="ctrl.getQuery()">Get XML Query</button>
+            <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
         </div>
     </div>
 
     <div class="row" ng-controller="EnrichmentCtrl as enr">
 
+        <!-- sets -->
         <div class="row">
             <h2>Select one of these inputs</h2>
             <tabset type="pills" justified="true">
@@ -31,6 +32,7 @@
             </tabset>
         </div>
 
+        <!-- background -->
         <div class="row">
             <h2>Background is optional</h2>
             <tabset type="pills" justified="true">
@@ -41,6 +43,7 @@
             </tabset>
         </div>
 
+        <!-- cutoff and the rest -->
         <div class="row">
             <h2>Output filtering</h2>
             <tabset type="pills" justified="true">
@@ -57,6 +60,7 @@
             </tabset>
         </div>
 
+        <!-- annotations -->
         <div class="row">
             <h2>Annotations</h2>
             <tabset type="pills" justified="true">
@@ -70,7 +74,4 @@
 
     </div>
 
-    <!-- <div class="mve-background"></div>
-    <div class="mve-cutoff"></div>
-    <div class="mve-annotations"></div> -->
 </div>
