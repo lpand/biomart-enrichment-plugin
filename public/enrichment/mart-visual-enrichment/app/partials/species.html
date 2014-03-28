@@ -1,7 +1,11 @@
-<div class="mve-species">
-    <h2>Input Species Available</h2>
-    <select class="form-control mve-select"
-            ng-model="selectedSpecies"
-            ng-options="s.displayName for s in species"
-            ng-change="updateSpecies(selectedSpecies)"/>
-</div>
+    <div class="mve-species col-md-8">
+        <h2>Input Species Available</h2>
+        <select class="form-control mve-select"
+                ng-model="selectedSpecies"
+                ng-options="s.displayName for s in species"
+                ng-change="updateSpecies(selectedSpecies)"/>
+    </div>
+    <div class="query-buttons col-md-4" ng-cotroller="QueryCtrl as ctrl">
+        <button class="btn btn-default" ng-click="ctrl.submit()">Submit</button>
+        <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
+    </div>

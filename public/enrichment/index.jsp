@@ -16,10 +16,10 @@
 </head>
 <body ng-app="martVisualEnrichment">
 
-<div ng-view></div>
+<div ui-view></div>
 
 <script src="mart-visual-enrichment/app/lib/angular/angular.js"></script>
-<script src="mart-visual-enrichment/app/lib/angular/angular-route.js"></script>
+<script src="mart-visual-enrichment/app/lib/angular/angular-ui-router.js"></script>
 <script type="text/javascript" src="mart-visual-enrichment/app/lib/ui-bootstrap-tpls-0.10.0.js"></script>
 
 <script src="mart-visual-enrichment/app/js/app.js"></script>
