@@ -2,48 +2,76 @@
 "use strict";
 
 var app = angular.module("martVisualEnrichment", [
-    "ngRoute",
+    "ui.router",
     "martVisualEnrichment.services",
     "martVisualEnrichment.controllers",
     "martVisualEnrichment.directives"
 ]);
 
-app.config(["$routeProvider", "$locationProvider",
-            function routes ($routeProvider, $locationProvider) {
+app.config(["$stateProvider", "$locationProvider",
+            function routes ($stateProvider, $locationProvider) {
 
-    // This route gets species for the EnrichmentCtrl
-    var home = {
-        controller: "SpeciesCtrl",
-        templateUrl: "mart-visual-enrichment/app/partials/enrichment.html",
-        resolve: {
-            species: ["$route", "$location", "bmservice",
-                     function species ($route, $loc, bm) {
-                return bm.marts($route.current.params.gui)
-                .then(function (res) {
-                    return res.data.marts[0];
-                }).then(function (mart) {
-                    if (! ("config" in $loc.search())) $loc.search("config", mart.config);
-                    return bm.datasets(mart.config);
-                }).then(function (res) {
-                    var species = res.data;
-                    if (! ("species" in $loc.search())) $loc.search("species", species[0].name);
-                    return species;
-                });
-            }]
-        }
-    }
-
-    // $locationProvider.html5Mode(true);
-
-    $routeProvider
-        .when("/gui/:gui", home)
-        // .otherwise("/");
+    $stateProvider
+        .state("gui", {
+            abstract: true,
+            url: "/gui/:gui/",
+            templateUrl: "gui.html",
+            resolve: {
+                mart: [
+                    "$state",
+                    "$stateParams",
+                    "bmservice",
+                    function mart ($state, $params, bm) {
+                        return bm.marts($params.gui).then(function (res) {
+                            $state.go("gui.config", {config: mart.config})
+                            return res.data.marts[0];
+                        });
+                }]
+            }
+        })
+        .state("gui.config", {
+            abstract: true,
+            url: "/gui/:gui/config/:config",
+            templateUrl: "gui.config.html",
+            resolve: {
+                species: [
+                    "$state",
+                    "$stateParams",
+                    "bmservice",
+                    "mart",
+                    function species ($state, $params, bm, mart) {
+                        return bm.datasets(mart.config).then(function (res) {
+                            var species = res.data;
+                            $state.go("gui.config.species", {
+                                species: species[0]
+                            });
+                            return species;
+                        });
+                    }]
+            }
+        })
+        .stete("gui.config.species", {
+            url: "/species/:species",
+            templateUrl: "species.html",
+            controller: "SpeciesCtrl"
+        })
+        .state("gui.config.species.enrichment", {
+            url: "/enrichment",
+            templateUrl: "enrichment.html",
+            controller: "EnrichmentCtrl",
+            resolve: {
+                containers: [
+                    "$stateParams",
+                    "bmservice",
+                    function ($params, bmservice) {
+                        bm.containers($params.species, $params.config, true)
+                            .then(function getContainers (res) {
+                                return res.data;
+                            });
+                    }]
+            }
+        });
 
 }]);
-
-// app.run(["$templateCache",function($templateCache) {
-//     $templateCache.put("partials/enrichment.html", document.getElementById("enrichment.html").textContent);
-//     $templateCache.put("partials/species.html", document.getElementById("species.html").textContent);
-// }]);
 
 })(angular);
