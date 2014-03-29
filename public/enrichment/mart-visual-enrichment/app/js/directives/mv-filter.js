@@ -8,7 +8,6 @@ app.directive("mvFilter", [function mvFilter () {
         restrict: "A",
         templateUrl: "mart-visual-enrichment/app/partials/filter.html",
         scope: true,
-        // replace: true,
         link: function (scope, elm, attrs) {
             if (!attrs.mvFilter) return;
             scope.filter = scope.$parent.$eval(attrs.mvFilter);

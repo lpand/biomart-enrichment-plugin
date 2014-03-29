@@ -1,77 +1,98 @@
-
 <div class="container">
     <div class="row">
-        <mv-species class="col-md-8" species="{{species}}"></mv-species>
         <div class="query-buttons col-md-4" ng-cotroller="QueryCtrl as ctrl">
             <button class="btn btn-default" ng-click="ctrl.submit()">Submit</button>
             <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
         </div>
+        <div class="mve-species col-md-8" ng-controller="SpeciesCtrl">
+            <h2>Input Species Available</h2>
+            <select class="form-control mve-select"
+                    ng-model="selectedSpecies"
+                    ng-options="s.displayName for s in species"
+                    ng-change="updateSpecies(selectedSpecies)">
+            </select>
+        </div>
     </div>
 
-    <div class="row" ng-controller="EnrichmentCtrl as enr">
+    <div class="enrichment container" ng-controller="EnrichmentCtrl as enr">
 
         <!-- sets -->
         <div class="row">
-            <h2>Select one of these inputs</h2>
-            <tabset type="pills" justified="true">
-                <tab heading="List of Genes">
-                    <div mv-filter="enr.getFilter('sets')">
-                    </div>
-                </tab>
-                <tab heading="BED File">
-                    <div class="col-md-8"
-                         mv-filter="enr.getFilter('bed_regions')">
-                     </div>
-                     <div class="col-md-4">
-                        <div mv-filter="enr.getFilter('downstream')">
+            <div class="col-md-8">
+                <h2>Select one of these inputs</h2>
+                <tabset type="pills" justified="true">
+                    <tab active>
+                        <tab-heading>
+                            <h3>List of Genes</h3>
+                        </tab-heading>
+                        <div mv-filter="{{enr.getFilter('sets')}}">
+                        </div>
+                    </tab>
+                    <tab>
+                        <tab-heading>
+                            <h3>BED File</h3>
+                        </tab-heading>
+                        <div class="col-md-8"
+                             mv-filter="{{enr.getFilter('bed_regions')}}">
                          </div>
-                         <div mv-filter="enr.getFilter('upstream')">
+                         <div class="col-md-4">
+                            <div mv-filter="{{enr.getFilter('downstream')}}">
+                             </div>
+                             <div mv-filter="{{enr.getFilter('upstream')}}">
+                             </div>
                          </div>
-                     </div>
-                </tab>
-            </tabset>
+                    </tab>
+                </tabset>
+            </div>
         </div>
 
         <!-- background -->
         <div class="row">
-            <h2>Background is optional</h2>
-            <tabset type="pills" justified="true">
-                <tab heading="Background">
-                    <div mv-filter="enr.getFilter('background')">
-                     </div>
-                </tab>
-            </tabset>
+            <div class="col-md-8">
+                <h2>Background is optional</h2>
+                <tabset type="pills" justified="true">
+                    <tab>
+                        <tab-heading><h3>Background</h3></tab-heading>
+                        <div mv-filter="{{enr.getFilter('background')}}">
+                         </div>
+                    </tab>
+                </tabset>
+            </div>
         </div>
 
         <!-- cutoff and the rest -->
         <div class="row">
-            <h2>Output filtering</h2>
-            <tabset type="pills" justified="true">
-                <tab heading="Cutoff">
-                    <div mv-filter="enr.getFilter('cutoff')">
-                     </div>
-                     <div mv-filter="enr.getFilter('gene_type')">
-                     </div>
-                     <div mv-filter="enr.getFilter('gene_limit')">
-                     </div>
-                     <div mv-filter="enr.getFilter('homolog')">
-                     </div>
-                </tab>
-            </tabset>
+            <div class="col-md-8">
+                <h2>Output filtering</h2>
+                <tabset type="pills" justified="true">
+                    <tab>
+                        <tab-heading><h3>Cutoff</h3></tab-heading>
+                        <div mv-filter="{{enr.getFilter('cutoff')}}">
+                         </div>
+                         <div mv-filter="{{enr.getFilter('gene_type')}}">
+                         </div>
+                         <div mv-filter="{{enr.getFilter('gene_limit')}}">
+                         </div>
+                         <div mv-filter="{{enr.getFilter('homolog')}}">
+                         </div>
+                    </tab>
+                </tabset>
+            </div>
         </div>
 
         <!-- annotations -->
         <div class="row">
-            <h2>Annotations</h2>
-            <tabset type="pills" justified="true">
-                <tab heading="Annotations">
-                    <div ng-repeat="a in enr.getAttributes('annotations')"
-                         mv-attribute="a">
-                     </div>
-                </tab>
-            </tabset>
+            <div class="col-md-8">
+                <h2>List of Annotations</h2>
+                <tabset type="pills" justified="true">
+                    <tab>
+                        <tab-heading><h3>Annotations</h3></tab-heading>
+                        <div ng-class="mve-annotations" ng-repeat="a in enr.getAttributes('annotation')"
+                             mv-attribute="a">
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
         </div>
-
     </div>
-
 </div>

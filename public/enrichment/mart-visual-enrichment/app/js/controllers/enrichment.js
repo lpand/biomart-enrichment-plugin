@@ -18,9 +18,8 @@ function EnrichmentCtrl($scope, $loc, $log, bm, find) {
     ctrl.$log = $log;
     ctrl.bm = bm;
     ctrl.find = find;
+    ctrl.containers = $scope.containers;
     ctrl.init();
-    ctrl.searchChange();
-    $scope.$on("$locationChangeSuccess", ctrl.searchChange.bind(ctrl));
 
 }
 
@@ -28,36 +27,10 @@ EnrichmentCtrl.prototype = {
     init: function init() {
         var ctrl = this;
         ctrl.reqs = ["cutoff", "bonferroni", "bed_regions", "sets", "background", "upstream", "downstream", "gene_type",
-                     "gene_limit", "homolog"];
-        ctrl.enElementValues = {};
+                     "gene_limit", "homolog", "annotation"];
+        ctrl.enElementValues = ctrl.findElements(ctrl.containers);
     },
 
-    searchChange: function searchChange () {
-        var ctrl = this, s = ctrl.$loc.search(), changed = false;
-        if (s.species && s.species !== ctrl.enSpeciesName) {
-            ctrl.enSpeciesName = s.species;
-            changed = true;
-        }
-        if (s.config && s.config !== ctrl.enConfig) {
-            ctrl.enConfig = s.config;
-            changed = true;
-        }
-        if (changed) {
-            ctrl.containersUpdatePathPromise(ctrl.enSpeciesName, ctrl.enConfig);
-        }
-    },
-
-    containersUpdatePathPromise: function containersUpdatePathPromise(species, config) {
-        var ctrl = this;
-        return ctrl.bm.containers(species, config, true).
-            then(function getContainers (res) {
-                var c = ctrl.containers = res.data;
-                ctrl.enElementValues = ctrl.findElements(ctrl.containers);
-            }).
-            catch(function (reason) {
-                ctrl.$log.error("Enrichment controller: "+reason);
-            });
-    },
 
     findElements: function findElements(coll) {
         var ctrl = this;
@@ -84,7 +57,7 @@ EnrichmentCtrl.prototype = {
 
 
     // This returns all the attributes with elmFunc function
-    getAttributes: function getFilter(elmFunc) {
+    getAttributes: function getAttributes(elmFunc) {
         return this.getElements(elmFunc, "attributes");
     },
 
