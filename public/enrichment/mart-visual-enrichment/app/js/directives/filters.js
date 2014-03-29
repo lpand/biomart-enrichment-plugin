@@ -46,8 +46,8 @@ app.directive("uploadFilter",
             });
 
             scope.setFilter = function (value) {
-                scope.textareaValue = value ? value : "";
-                qb.setFilter(scope.filter.name, value && value !== "" ? value : null);
+                scope.filter.value = scope.textareaValue = value ? value : "";
+                qb.setFilter(scope.filter.name, value && value !== "" ? scope.filter : null);
             }
         }
     }
@@ -77,8 +77,8 @@ app.directive("singleSelectUploadFilter",
             });
 
             scope.setFilter = function (value) {
-                scope.textareaValue = value ? value : "";
-                qb.setFilter(scope.selected.name, value && value !== "" ? value : null);
+                scope.selected.value = scope.textareaValue = value ? value : "";
+                qb.setFilter(scope.selected.name, value && value !== "" ? scope.selected : null);
             }
 
             scope.onSelect = function (selected) {
@@ -106,7 +106,8 @@ app.directive("textFilter",
                 var v = angular.isString(scope.filterText) && scope.filterText !== ""
                     ? sanitize.stripTags(value)
                     : null;
-                qb.setFilter(scope.filter.name, v);
+                scope.filter.value = v;
+                qb.setFilter(scope.filter.name, v ? scope.filter : null);
             }
         }
     }
@@ -121,7 +122,8 @@ app.directive("booleanFilter",
         link: function (scope, iElement, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
             scope.set = function set (value) {
-                qb.setFilter(scope.filter.name, value);
+                scope.filter.value = value;
+                qb.setFilter(scope.filter.name, scope.filter);
             }
         }
     }

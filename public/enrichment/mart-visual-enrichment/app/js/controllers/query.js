@@ -5,11 +5,13 @@ var app = angular.module("martVisualEnrichment.controllers");
 
 app.controller("QueryCtrl", QueryCtrl);
 
-QueryCtrl.$inject = [ "$scope", "$location", "queryValidator", "queryBuilder", "bmservice", "mvConfig"];
-function QueryCtrl($scope, $loc, queryValidator, qb, bm, config) {
+QueryCtrl.$inject = [ "$scope", "$location", "$window", "queryValidator", "queryBuilder", "bmservice", "mvConfig", "$modal"];
+function QueryCtrl($scope, $loc, win, qv, qb, bm, config, $modal) {
     var ctrl = this;
 
-    ctrl.queryValidator = queryValidator;
+    ctrl.win = win;
+    ctrl.$modal = $modal;
+    ctrl.qv = qv;
     ctrl.qb = qb;
     ctrl.$loc = $loc
     ctrl.bm = bm;
@@ -23,23 +25,27 @@ QueryCtrl.prototype = {
             ctrl.buildQuery();
             $loc.url(ctrl.config.visualizationUrl);
         } else {
-            ctrl.showError(ctrl.queryValidator.errMessage());
+            ctrl.showError(ctrl.qv.errMessage());
         }
     },
 
 
-    showError: function err() {
-
+    showError: function err(message) {
+        this.win.alert(message);
     },
 
 
-    showModal: function modal() {
+    openModal: function modal(xml) {
+        this.$modal.open({
+            template: '<div class="modal-header"><h2>XML</h2></div><div class="modal-body"><pre><code>"'+window.escapeHtmlEntities(xml)+'"</code></pre></div>'
+        });
+
 
     },
 
 
     validate: function validate() {
-        return this.queryValidator.validate(this.qb.getElements());
+        return this.qv.validate(this.qb.getElements());
     },
 
 
@@ -61,7 +67,7 @@ QueryCtrl.prototype = {
             ctrl.buildQuery();
             ctrl.openModal(ctrl.getXml());
         } else {
-            showError(ctrl.queryValidator.errMessage());
+            ctrl.showError(ctrl.qv.errMessage());
         }
     }
 }

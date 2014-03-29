@@ -7,10 +7,13 @@ app.service("queryValidator", function queryValidator() {
     this.err = "";
 
     this.mkFnMap = function mkFnMap(elmMap, m) {
-        return elmMap.reduce(function r(map, el) {
-            var f = el.function;
-            if (!map[f]) { map[f] = [] }
-            map[f].push(el)
+        return Object.keys(elmMap).reduce(function r(map, prop) {
+            var el = elmMap[prop], f;
+            if (el) {
+                f = el.function;
+                if (!map[f]) { map[f] = [] }
+                map[f].push(el)
+            }
             return map;
         }, m || {});
     }
@@ -25,11 +28,14 @@ app.service("queryValidator", function queryValidator() {
         elm  = this.mkFnMap(elmMap.filters, elm);
         // 1. sets and bed_regions cannot be set at the same time or both missing
         if (! (def(elm.sets) ^ def(elm.bed_regions))) {
-            this.err = "There can only be a list of genes or a BED file, not both";
+            if (def(elm.sets))
+                this.err = "There can only be a list of genes or a BED file, not both.";
+            else
+                this.err = "One between list of genes and BED file must be chose, please.";
             return false;
         }
         if (!def(elm.cutoff)) {
-            this.err = "The cutoff must be provided"
+            this.err = "The cutoff must be provided."
             return false;
         }
 
@@ -38,7 +44,7 @@ app.service("queryValidator", function queryValidator() {
     }
 
     this.errMessage = function message() {
-        return err;
+        return this.err;
     }
 
 });

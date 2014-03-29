@@ -4,7 +4,7 @@ describe("queryValidator service", function () {
     beforeEach(module("martVisualEnrichment.services"));
     beforeEach(inject(function ($injector) {
         qv = $injector.get("queryValidator");
-        filters = [];
+        filters = {};
         sets = {
             name: "set filter",
             function: "sets"
@@ -18,20 +18,27 @@ describe("queryValidator service", function () {
             function: "cutoff"
         };
         elms = {
-            attributes: [],
+            attributes: {},
             filters: filters
         }
     }));
 
+    it ("should ignore elements with null value", function () {
+        filters.foo = null, filters.sets = sets, filters.cutoff = cutoff;
+        expect(qv.validate(elms)).to.be.true;
+    })
+
     describe("valid case", function () {
         it ("when sets and cutoff are present", function () {
-            filters.push(sets, cutoff);
+            filters.sets = sets, filters.cutoff = cutoff;
             expect(qv.validate(elms)).to.be.true;
+            expect(qv.errMessage()).to.be.empty;
         });
 
         it ("when bed_regions and cutoff are present", function () {
-            filters.push(bed_regions, cutoff)
+            filters.bed_regions = bed_regions, filters.cutoff = cutoff;
             expect(qv.validate(elms)).to.be.true;
+            expect(qv.errMessage()).to.be.empty;
         });
     });
 
@@ -39,16 +46,19 @@ describe("queryValidator service", function () {
     describe("invalid case", function () {
         it ("when there are no filters", function () {
             expect(qv.validate(elms)).to.be.false;
+            expect(qv.errMessage()).to.not.be.empty;
         })
 
         it ("when sets, bed_regions and cutoff are present", function () {
-            filters.push(sets, cutoff, bed_regions);
+            filters.sets = sets, filters.cutoff = cutoff, filters.bed_regions = bed_regions;
             expect(qv.validate(elms)).to.be.false;
+            expect(qv.errMessage()).to.not.be.empty;
         });
 
         it ("when cutoff is missing", function () {
-            filters.push(bed_regions);
+            filters.bed_regions = bed_regions;
             expect(qv.validate(elms)).to.be.false;
+            expect(qv.errMessage()).to.not.be.empty;
         });
     });
 

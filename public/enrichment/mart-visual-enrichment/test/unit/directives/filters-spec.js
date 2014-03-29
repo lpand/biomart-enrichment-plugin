@@ -69,9 +69,11 @@ describe("biomart filters", function () {
 
         it ("pushes its state to the queryBuilder when input content changes", function () {
             elm.find("input").eq(0).triggerHandler("click");
-            expect(qb.q).to.have.property(filter.name, "only");
+            expect(qb.q).to.have.property(filter.name, filter);
+            expect(filter).to.have.property("value", "only");
             elm.find("input").eq(1).triggerHandler("click");
-            expect(qb.q).to.have.property(filter.name, "excluded");
+            expect(qb.q).to.have.property(filter.name, filter);
+            expect(filter).to.have.property("value", "excluded");
         });
     });
 

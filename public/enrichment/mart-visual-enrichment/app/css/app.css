@@ -44,6 +44,12 @@ body {
     margin: 20px auto 140px auto;
 }
 
+
+.modal-dialog {
+    width: 80%;
+}
+
+
 @media (min-width: 1024px) {
 
 .query-buttons {

@@ -19,32 +19,32 @@ function xml (dataset, config, filters, attributes, processor, limit, header, cl
 
     if (!dataset) return null;
 
-    arr.push(['<Dataset name="', dataset, '" ', 'config="' + config + '">'].join(""));
+    arr.push(['  <Dataset name="', dataset, '" ', 'config="' + config + '">'].join(""));
 
     Object.keys(filters).forEach(function (fk) {
-        var v = filters[fk], set = true;
-        if (angular.isDefined(v)) {
-            if (angular.isString(v) && v.trim() === "") {
-                set = false;
-            }
-
-            if (set) {
-                arr.push('<Filter name="'+fk+'" value="'+v+'" />');
+        var v = filters[fk];
+        if (v) {
+            v = filters[fk].value
+            if (angular.isDefined(v)) {
+                if (angular.isString(v) && v.trim() === "") {
+                    return;
+                }
+                arr.push('    <Filter name="'+fk+'" value="'+v+'"></Filter>');
             }
         }
     })
 
     Object.keys(attributes).forEach(function (ak) {
         var v = attributes[ak]
-        if (angular.isDefined(v)) {
-            arr.push('<Attribute name="'+v+'" />');
+        if (v) {
+            arr.push('    <Attribute name="'+ak+'"></Attribute>');
         }
     })
 
-    arr.push("</Dataset>")
+    arr.push("  </Dataset>")
     arr.push('</Query>');
 
-    return arr.join('');
+    return arr.join('\n');
 }
 
 
@@ -68,7 +68,8 @@ app.service("queryBuilder",
     }
 
     this.build = function (dataset, config) {
-        return this.xml = xml(dataset, config, this.filters, this.attrs, "TSV", 1000, true, true);
+        var limit = -1, header = true, client = false;
+        return this.xml = xml(dataset, config, this.filters, this.attrs, "TSV", limit, header, client);
     }
 
     this.getXml = function () {
