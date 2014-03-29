@@ -15,10 +15,11 @@ app.controller("SpeciesCtrl", ["$scope", "$location",
             break;
         }
     }
-    $scope.updateSpecies = function (species) {
+    this.updateSpecies = function (species) {
         $loc.search("species", species.name);
     }
 
+    $scope.updateSpecies = this.updateSpecies;
 
 }]);
 

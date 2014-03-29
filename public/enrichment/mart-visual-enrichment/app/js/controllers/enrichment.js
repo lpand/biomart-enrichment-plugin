@@ -59,24 +59,7 @@ EnrichmentCtrl.prototype = {
     // This returns all the attributes with elmFunc function
     getAttributes: function getAttributes(elmFunc) {
         return this.getElements(elmFunc, "attributes");
-    },
-
-
-    set: function (funcName, funcValue) {
-        var ctrl = this, k = funcName, v = funcValue;
-        ctrl.enElementValues[k] = v;
     }
-
-
-    // defineEnrProperties: function (keys) {
-    //     var ctrl = this;
-    //     angular.forEach(keys, function (r) {
-    //         Object.defineProperty(ctrl, r, {
-    //             get: function () { return this.enElementValues[r] },
-    //             set: function (value) { this.set(r, value) }
-    //         });
-    //     });
-    // }
 }
 
 

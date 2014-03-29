@@ -28,6 +28,16 @@ describe("mvFilters", function () {
             'mart-visual-enrichment/app/partials/boolean-filter.html',
             window.__html__['app/partials/boolean-filter.html']);
         $templateCache.put(
+            'mart-visual-enrichment/app/partials/text-filter.html',
+            window.__html__['app/partials/text-filter.html']);
+        $templateCache.put(
+            'mart-visual-enrichment/app/partials/upload-filter.html',
+            window.__html__['app/partials/upload-filter.html']);
+        $templateCache.put(
+            'mart-visual-enrichment/app/partials/single-select-upload-filter.html',
+            window.__html__['app/partials/single-select-upload-filter.html']);
+
+        $templateCache.put(
             'mart-visual-enrichment/app/partials/filter.html',
             window.__html__['app/partials/filter.html']);
         filter = {

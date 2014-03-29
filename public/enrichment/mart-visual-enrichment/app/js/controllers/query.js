@@ -3,15 +3,17 @@
 
 var app = angular.module("martVisualEnrichment.controllers");
 
-app.controller("QueryCtrl", ["$scope", "$location", "queryValidator", "queryBuilder", "bmservice", QueryCtrl]);
+app.controller("QueryCtrl", QueryCtrl);
 
-
-function QueryCtrl($scope, $loc, queryValidator, qb, bm) {
+QueryCtrl.$inject = [ "$scope", "$location", "queryValidator", "queryBuilder", "bmservice", "mvConfig"];
+function QueryCtrl($scope, $loc, queryValidator, qb, bm, config) {
     var ctrl = this;
 
     ctrl.queryValidator = queryValidator;
     ctrl.qb = qb;
     ctrl.$loc = $loc
+    ctrl.bm = bm;
+    ctrl.config = config;
 }
 
 QueryCtrl.prototype = {
@@ -19,7 +21,7 @@ QueryCtrl.prototype = {
         var ctrl = this;
         if (ctrl.validate()) {
             ctrl.buildQuery();
-            $loc.url("/visualization/");
+            $loc.url(ctrl.config.visualizationUrl);
         } else {
             ctrl.showError(ctrl.queryValidator.errMessage());
         }
@@ -37,7 +39,7 @@ QueryCtrl.prototype = {
 
 
     validate: function validate() {
-        return this.queryValidator.validate(qb.getElements());
+        return this.queryValidator.validate(this.qb.getElements());
     },
 
 
@@ -54,6 +56,7 @@ QueryCtrl.prototype = {
 
 
     showQuery: function showQuery() {
+        var ctrl = this;
         if (ctrl.validate()) {
             ctrl.buildQuery();
             ctrl.openModal(ctrl.getXml());

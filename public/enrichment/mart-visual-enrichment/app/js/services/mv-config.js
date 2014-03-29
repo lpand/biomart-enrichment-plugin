@@ -6,11 +6,15 @@ angular.module("martVisualEnrichment.services").
 factory("mvConfig",
          [function mvConfig() {
 
-    var configElemId = "config", elem = document.getElementById(configElemId),
-        config = { url: "/martservice", queryUrl: "/martservice/results" };
+    var configElemId = "enrichment-config", elem = document.getElementById(configElemId),
+        config = {
+            url: "/martservice",
+            queryUrl: "/martservice/results",
+            visualizationUrl: "/visualization/"
+        };
 
     if (elem) {
-        config = JSON.parse(elem.textContent);
+        config = angular.merge(JSON.parse(elem.textContent), config);
     }
 
     return config;

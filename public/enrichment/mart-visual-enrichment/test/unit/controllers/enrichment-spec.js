@@ -45,12 +45,12 @@ describe("Enrichment Controller", function () {
         expect(c).to.not.have.property("containers");
     });
 
-    it ("should get containers on url query change", function () {
-        var c = mkCtrl();
-        $loc.search({species: species[0].name, config: config});
-        $scope.$apply();
-        expect(c.containers).to.eql(containers);
-    });
+    // it ("should get containers on url query change", function () {
+    //     var c = mkCtrl();
+    //     $loc.search({species: species[0].name, config: config});
+    //     $scope.$apply();
+    //     expect(c.containers).to.eql(containers);
+    // });
 
     describe("#getFilter", function () {
         var c, reqs;
@@ -95,20 +95,20 @@ describe("Enrichment Controller", function () {
         });
     });
 
-    describe("#set(funcName, funcValue)", function () {
-        var c, reqs;
-        beforeEach(function () {
-            reqs = fixtures.reqs();
-            c = mkCtrl();
-            $loc.search({species: species[0].name, config: config});
-            $scope.$apply();
-        });
+    // describe("#set(funcName, funcValue)", function () {
+    //     var c, reqs;
+    //     beforeEach(function () {
+    //         reqs = fixtures.reqs();
+    //         c = mkCtrl();
+    //         $loc.search({species: species[0].name, config: config});
+    //         $scope.$apply();
+    //     });
 
-        it ("stores key, value pairs", function () {
-            var o = {value: "booom"};
-            c.set("myFunc", 42); c.set("foo", o);
-            expect(c.enElementValues).to.have.property("myFunc", 42);
-            expect(c.enElementValues).to.have.deep.property("foo.value", "booom");
-        });
-    })
+    //     it ("stores key, value pairs", function () {
+    //         var o = {value: "booom"};
+    //         c.set("myFunc", 42); c.set("foo", o);
+    //         expect(c.enElementValues).to.have.property("myFunc", 42);
+    //         expect(c.enElementValues).to.have.deep.property("foo.value", "booom");
+    //     });
+    // })
 })

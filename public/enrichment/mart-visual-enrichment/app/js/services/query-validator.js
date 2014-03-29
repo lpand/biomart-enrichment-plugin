@@ -6,11 +6,25 @@ var app = angular.module("martVisualEnrichment.services");
 app.service("queryValidator", function queryValidator() {
     this.err = "";
 
+    this.mkFnMap = function mkFnMap(elmMap, m) {
+        return elmMap.reduce(function r(map, el) {
+            var f = el.function;
+            if (!map[f]) { map[f] = [] }
+            map[f].push(el)
+            return map;
+        }, m || {});
+    }
+
+    function def (t) {
+        return angular.isDefined(t) && angular.isArray(t) && t.length !== 0;
+    }
+
     // TODO: add validation rules to the config
     this.validate = function validate (elmMap) {
-        var def = angular.isDefined.bind(angular);
-        // 1. sets and bed_regions cannot be set at the same time.
-        if (def(elm.sets && def(elm.bed_regions))) {
+        var elm  = this.mkFnMap(elmMap.attributes);
+        elm  = this.mkFnMap(elmMap.filters, elm);
+        // 1. sets and bed_regions cannot be set at the same time or both missing
+        if (! (def(elm.sets) ^ def(elm.bed_regions))) {
             this.err = "There can only be a list of genes or a BED file, not both";
             return false;
         }
