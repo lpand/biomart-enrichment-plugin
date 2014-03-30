@@ -29,7 +29,7 @@ function xml (dataset, config, filters, attributes, processor, limit, header, cl
                 if (angular.isString(v) && v.trim() === "") {
                     return;
                 }
-                arr.push('    <Filter name="'+fk+'" value="'+v+'"></Filter>');
+                arr.push('    <Filter name="'+fk+'">'+v+'</Filter>');
             }
         }
     })
@@ -57,14 +57,10 @@ app.service("queryBuilder",
 
     this.setFilter = function (name, value) {
         this.filters[name] = value;
-    };
-
-    this.setAttribute = function (name) {
-        this.attrs[name] = name;
     }
 
-    this.rmAttribute = function (name) {
-        delete this.attrs[name];
+    this.setAttribute = function (name, value) {
+        this.attrs[name] = value;
     }
 
     this.build = function (dataset, config) {

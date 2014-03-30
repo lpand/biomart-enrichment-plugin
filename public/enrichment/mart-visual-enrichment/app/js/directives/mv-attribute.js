@@ -16,9 +16,9 @@ app.directive("mvAttribute", [
                 scope.tVal = scope.attr.name;
                 scope.setAttribute = function (checked) {
                     if (checked) {
-                        qb.setAttribute(scope.attr.name);
+                        qb.setAttribute(scope.attr.name, scope.attr);
                     } else {
-                        qb.rmAttribute(scope.attr.name);
+                        qb.setAttribute(scope.attr.name);
                     }
                 }
             }
