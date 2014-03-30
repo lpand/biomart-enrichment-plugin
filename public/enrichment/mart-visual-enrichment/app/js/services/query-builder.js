@@ -86,24 +86,4 @@ app.service("queryBuilder",
 }]);
 
 
-// Set the proper filters, attributes, dataset and config for the query
-// app.service("queryFactory", ["queryBuilder", function (qb) {
-
-//     this.elmMap = null;
-
-//     this.elements = function setElms(elmMap) {
-//         if (elmMap) {
-//             this.elmMap = elmMap;
-//             return this;
-//         } else {
-//             return this.elmMap
-//         }
-//     }
-
-//     this.create = function create() {
-
-//     }
-
-// }]);
-
 })(angular);

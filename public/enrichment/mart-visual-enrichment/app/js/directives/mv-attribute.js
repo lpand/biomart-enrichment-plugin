@@ -8,15 +8,15 @@ app.directive("mvAttribute", [
     function (qb) {
         return {
             restrict: "A",
-            scope: true,
+            scope: {},
             templateUrl: "mart-visual-enrichment/app/partials/attribute.html",
             link: function (scope, elem, attrs) {
                 scope.attr = scope.$parent.$eval(attrs.mvAttribute);
                 scope.value = scope.attr.selected ? scope.attr.name : null;
                 scope.tVal = scope.attr.name;
-                scope.setAttribute = function (name) {
-                    if (name) {
-                        qb.setAttribute(name);
+                scope.setAttribute = function (checked) {
+                    if (checked) {
+                        qb.setAttribute(scope.attr.name);
                     } else {
                         qb.rmAttribute(scope.attr.name);
                     }

@@ -22,6 +22,10 @@ app.service("queryValidator", function queryValidator() {
         return angular.isDefined(t) && angular.isArray(t) && t.length !== 0;
     }
 
+    function undef (t) {
+        return ! def(t);
+    }
+
     // TODO: add validation rules to the config
     this.validate = function validate (elmMap) {
         var elm  = this.mkFnMap(elmMap.attributes);
@@ -31,11 +35,15 @@ app.service("queryValidator", function queryValidator() {
             if (def(elm.sets))
                 this.err = "There can only be a list of genes or a BED file, not both.";
             else
-                this.err = "One between list of genes and BED file must be chose, please.";
+                this.err = "One between list of genes and BED file must be chosen, please.";
             return false;
         }
-        if (!def(elm.cutoff)) {
+        if (undef(elm.cutoff)) {
             this.err = "The cutoff must be provided."
+            return false;
+        }
+        if (undef(elm.annotation)) {
+            this.err = "Atleast one annotation must be selected, please."
             return false;
         }
 

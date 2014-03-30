@@ -18,7 +18,7 @@ describe("queryValidator service", function () {
             function: "cutoff"
         };
         elms = {
-            attributes: {},
+            attributes: {foo: {function: "annotation"}},
             filters: filters
         }
     }));

@@ -31,7 +31,7 @@ app.directive("uploadFilter",
     return {
         restrict: "E",
         templateUrl: partialsDir + "/upload-filter.html",
-        scope: true,
+        scope: {},
         link: function (scope, iElement, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
             iElement.find("input").on("change", function onChange (evt) {
@@ -59,7 +59,7 @@ app.directive("singleSelectUploadFilter",
     return {
         restrict: "E",
         templateUrl: partialsDir + "/single-select-upload-filter.html",
-        scope: true,
+        scope: {},
         link: function (scope, iElement, attrs) {
             var prevSelected;
             scope.filter = scope.$parent.$eval(attrs.filter);
@@ -83,7 +83,7 @@ app.directive("singleSelectUploadFilter",
 
             scope.onSelect = function (selected) {
                 if (prevSelected !== selected) {
-                    qb.setFilter(prevSelected, null);
+                    qb.setFilter(prevSelected.name, null);
                     prevSelected = selected;
                     this.setFilter(this.textareaValue);
                 }
@@ -99,7 +99,7 @@ app.directive("textFilter",
     return {
         restrict: "E",
         templateUrl: partialsDir + "/text-filter.html",
-        scope: true,
+        scope: {},
         link: function (scope, iElement, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
             scope.set = function set (value) {
@@ -118,7 +118,7 @@ app.directive("booleanFilter",
     return {
         restrict: "E",
         templateUrl: partialsDir + "/boolean-filter.html",
-        scope: true,
+        scope: {},
         link: function (scope, iElement, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
             scope.set = function set (value) {
