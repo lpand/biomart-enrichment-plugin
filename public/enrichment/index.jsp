@@ -16,7 +16,7 @@
 </head>
 <body ng-app="martVisualEnrichment">
 
-    <ng-view autoscroll></ng-view>
+    <ng-view></ng-view>
 
     <script src="mart-visual-enrichment/app/lib/angular/angular.js"></script>
     <script src="mart-visual-enrichment/app/lib/angular/angular-route.js"></script>
@@ -46,10 +46,8 @@
     <script src="mart-visual-enrichment/app/lib/cytoscape.js"></script>
 
     <!-- visualizations -->
-    <script src="mart-visual-enrichment/app/js/services/tabs.js"></script>
     <script src="mart-visual-enrichment/app/js/services/terms-async.js"></script>
     <script src="mart-visual-enrichment/app/js/services/terms.js"></script>
-    <script src="mart-visual-enrichment/app/js/services/data-retrieve.js"></script>
 
     <script src="mart-visual-enrichment/app/js/controllers/visualization.js"></script>
     <script src="mart-visual-enrichment/app/js/controllers/results-table.js"></script>

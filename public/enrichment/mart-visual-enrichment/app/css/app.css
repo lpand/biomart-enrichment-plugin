@@ -41,13 +41,15 @@ input[type=text] {
 }
 
 body {
-    margin: 20px auto 140px auto;
+    margin: 20px auto 250px auto;
 }
 
 
 .modal-dialog {
     width: 80%;
 }
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 
 @media (min-width: 1024px) {

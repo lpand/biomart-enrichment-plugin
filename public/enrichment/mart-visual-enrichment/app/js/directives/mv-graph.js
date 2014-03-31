@@ -67,6 +67,10 @@ function formatEles(eles) {
             e._id = id;
             e["id"] = id.replace(strip, '');
         }
+        if (e.target && e.source) {
+            e.target = e.target.replace(strip, '');
+            e.source = e.source.replace(strip, '');
+        }
         return { data: e };
     });
 }

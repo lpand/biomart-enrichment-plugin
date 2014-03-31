@@ -29,6 +29,10 @@ EnrichmentCtrl.prototype = {
         ctrl.reqs = ["cutoff", "bonferroni", "bed_regions", "sets", "background", "upstream", "downstream", "gene_type",
                      "gene_limit", "homolog", "annotation"];
         ctrl.enElementValues = ctrl.findElements(ctrl.containers);
+        ctrl.setsIsCollapsed = false;
+        ctrl.backgroundIsCollapsed = true;
+        ctrl.cutoffIsCollapsed = true;
+        ctrl.annotationIsCollapsed = true;
     },
 
 
