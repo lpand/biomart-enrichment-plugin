@@ -189,6 +189,34 @@ app.directive("singleSelectBooleanFilter", [
 }]);
 
 
+app.directive("singleSelectFilter", [
+              "queryBuilder",
+              function multiSelectFilter (qb) {
+
+    return {
+        restrict: "E",
+        templateUrl: partialsDir + "/single-select-filter.html",
+        scope: {},
+        link: function link(scope, elem, attrs) {
+            scope.filter = scope.$parent.$eval(attrs.filter);
+            scope.options = scope.filter.filters || scope.filter.values;
+            scope.setFilter = function setFilter (value) {
+                if (value && value !== "") {
+                    scope.filter.value = value;
+                    qb.setFilter(scope.filter.name, scope.filter);
+                } else {
+                    qb.setFilter(scope.filter.name)
+                }
+            }
+
+            scope.onSelect = function select (value) {
+                this.setFilter(value);
+            }
+        }
+    }
+}]);
+
+
 // app.controller("FilterCtrl", ["$scope", "queryBuilder", function FilterCtrl ($scope, qb) {
 //     var ctrl = this;
 
