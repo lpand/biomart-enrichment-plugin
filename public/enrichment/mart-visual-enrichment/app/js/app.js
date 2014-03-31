@@ -24,7 +24,7 @@ app.config(["$routeProvider",
         templateUrl: "mart-visual-enrichment/app/partials/enrichment.html",
         resolve: {
             coll: ["$route", "$location", "$q", "bmservice",
-                     function species ($route, $loc, $q, bm) {
+                     function coll ($route, $loc, $q, bm) {
                 var config = bm.marts($route.current.params.gui).
                     then(function (res) {
                         return res.data.marts[0].config;
@@ -64,6 +64,29 @@ app.config(["$routeProvider",
 
     var visualization = {
         templateUrl: "mart-visual-enrichment/app/partials/mart-visual-enrichment.html"
+        // resolve: {
+        //     tabs: [
+        //         "queryBuilder",
+        //         "bmservice",
+        //         function tabs(qb, bm) {
+        //             var xml = qb.getXml();
+        //             return bm.query(xml, {cache: false}).
+        //                 then(function then (res) {
+        //                     var graphs = res.data.graphs;
+        //                     return Object.keys(graphs).map(function (tabTitle) {
+        //                         var g = graphs[tabTitle];
+        //                         return {
+        //                             title: tabTitle,
+        //                             nodes: g.nodes,
+        //                             edges: g.edges
+        //                         };
+        //                     });
+        //                 }, function rejected (res) {
+        //                     $log.error("The results request went wrong: ", res.status);
+        //                     return res;
+        //                 })
+        //         }]
+        // }
     }
 
     $routeProvider

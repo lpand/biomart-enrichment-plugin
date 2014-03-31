@@ -20,28 +20,32 @@ service("bmservice",
     // guicontainer.
     //
     // e.g. gui.json?name=Enrichement
-    this.marts = function marts(guiContainer) {
-        return $http.get(url + "/gui.json?name="+guiContainer, baseOpts);
+    this.marts = function marts(guiContainer, opt) {
+        opt = opt || {};
+        return $http.get(url + "/gui.json?name="+guiContainer, angular.extend({}, baseOpts, opt));
     };
 
 
-    this.datasets = function datasets(config) {
+    this.datasets = function datasets(config, opt) {
+        opt = opt || {};
         var iUrl = url + "/datasets.json?config=" + config
-        return $http.get(iUrl, baseOpts);
+        return $http.get(iUrl, angular.extend({}, baseOpts, opt));
     };
 
 
     // containers.json?datasets=hsapiens_gene_ensembl&withfilters=true&withattributes=false&config=gene_ensembl_config_3_1_2
-    this.containers = function containers (datasets, config, withFilters, withAttributes) {
+    this.containers = function containers (datasets, config, withFilters, withAttributes, opt) {
+        opt = opt || {};
         var fs = withFilters, as = withAttributes,
             iUrl = url + "/containers.json?datasets="+datasets+"&config="+ config;
 
         if (angular.isDefined(fs)) iUrl += "&withfilters=" + !!fs;
         if (angular.isDefined(as)) iUrl += "&withattributes=" + !!as;
-        return $http.get(iUrl, baseOpts);
+        return $http.get(iUrl, angular.extend({}, baseOpts, opt));
     };
 
-    this.query = function (xml) {
+    this.query = function (xml, opt) {
+        opt = opt || {};
         var opt = angular.extend({
             params: { query: xml },
             // data: "query="+xml,
@@ -49,7 +53,7 @@ service("bmservice",
                 "Content-Type": "application/xml"
             }
         }, baseOpts);
-        return $http.get(queryUrl, opt);
+        return $http.get(queryUrl, angular.extend({}, baseOpts, opt));
     }
 
 

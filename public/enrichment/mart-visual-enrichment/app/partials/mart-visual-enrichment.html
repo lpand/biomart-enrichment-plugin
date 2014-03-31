@@ -1,32 +1,40 @@
- <div class="container-fluid" ng-controller="VisualizationCtrl">
-    <div ng-show="isLoading">
+ <div class="container-fluid" ng-controller="VisualizationCtrl as vis" ng-switch on="currentState">
+
+    <div ng-switch-when="loading">
         <h2>Loading...</h2>
     </div>
-    <tabset>
-        <tab ng-repeat="mvTab in mvTabs">
-          <tab-heading><a href="">{{mvTab.title}}</a></tab-heading>
-            <div class="row">
-                <div class="col-md-3 left-panel" >
-                    <div ng-controller="ResultsTableCtrl">
-                        <div>
-                            <input class="form-control" type="text" ng-model="pattern"
-                                   ng-change="filterByDescription(pattern)"
-                                   ng-trim="false"
-                                   placeholder="Search by description...">
+
+    <div ng-switch-when="error">
+        <h2>There has been an error: {{errorMessage}}</h2>
+    </div>
+
+    <div  ng-switch-when="loaded">
+        <tabset>
+            <tab ng-repeat="mvTab in mvTabs">
+              <tab-heading><a href="">{{mvTab.title}}</a></tab-heading>
+                <div class="row">
+                    <div class="col-md-3 left-panel" >
+                        <div ng-controller="ResultsTableCtrl">
+                            <div>
+                                <input class="form-control" type="text" ng-model="pattern"
+                                       ng-change="filterByDescription(pattern)"
+                                       ng-trim="false"
+                                       placeholder="Search by description...">
+                            </div>
+                            <hr />
+                            <div class="mv-table-container">
+                                <mv-results-table></mv-results-table>
+                            </div>
                         </div>
                         <hr />
-                        <div class="mv-table-container">
-                            <mv-results-table></mv-results-table>
-                        </div>
+
                     </div>
-                    <hr />
 
+                    <div class="col-md-9 right-panel" ng-controller="GraphCtrl">
+                        <mv-graph nodes="nodes" edges="edges" filter-pattern="search"></mv-graph>
+                    </div>
                 </div>
-
-                <div class="col-md-9 right-panel" ng-controller="GraphCtrl">
-                    <mv-graph nodes="nodes" edges="edges" filter-pattern="search"></mv-graph>
-                </div>
-            </div>
-        </tab>
-    </tabset>
+            </tab>
+        </tabset>
+    </div>
 </div>

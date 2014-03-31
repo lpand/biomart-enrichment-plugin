@@ -9,7 +9,7 @@ service("dataRetrieve",
 
     this.then = function (th, ch, nt) {
         var xml = queryBuilder.getXml(), p;
-        p = bmservice.query(xml).then(function then (res) {
+        p = bmservice.query(xml, {cache: false}).then(function then (res) {
             return res.data;
         }, function rejected (res) {
             $log.error("The results request went wrong: ", res.status);
