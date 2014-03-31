@@ -130,6 +130,65 @@ app.directive("booleanFilter",
 }]);
 
 
+app.directive("multiSelectFilter", [
+              "queryBuilder",
+              function multiSelectFilter (qb) {
+
+    return {
+        restrict: "E",
+        templateUrl: partialsDir + "/multi-select-filter.html",
+        scope: {},
+        link: function link(scope, elem, attrs) {
+            scope.filter = scope.$parent.$eval(attrs.filter);
+            scope.options = scope.filter.values;
+            scope.setFilter = function setFilter (values) {
+                if (values && values.length) {
+                    var vs = values.map(function (f) { return f.name });
+                    scope.filter.value = vs.join(",");
+                    qb.setFilter(scope.filter.name, scope.filter);
+                } else {
+                    qb.setFilter(scope.filter.name);
+                }
+            }
+            scope.onSelect = function select (value) {
+                this.setFilter(value);
+            }
+        }
+    }
+}]);
+
+
+app.directive("singleSelectBooleanFilter", [
+              "queryBuilder",
+              function multiSelectFilter (qb) {
+
+    return {
+        restrict: "E",
+        templateUrl: partialsDir + "/single-select-boolean-filter.html",
+        scope: {},
+        link: function link(scope, elem, attrs) {
+            var prevSelected = scope.selected;
+            scope.filter = scope.$parent.$eval(attrs.filter);
+            scope.options = scope.filter.filters;
+            scope.setFilter = function setFilter (filter) {
+                if (filter && prevSelected !== filter) {
+                    filter.value = "only";
+                    qb.setFilter(filter.name, filter);
+                }
+                if (prevSelected) {
+                    qb.setFilter(prevSelected.name);
+                }
+                prevSelected = filter;
+            }
+
+            scope.onSelect = function select (value) {
+                this.setFilter(value);
+            }
+        }
+    }
+}]);
+
+
 // app.controller("FilterCtrl", ["$scope", "queryBuilder", function FilterCtrl ($scope, qb) {
 //     var ctrl = this;
 

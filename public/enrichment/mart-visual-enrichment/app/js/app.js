@@ -62,11 +62,14 @@ app.config(["$routeProvider",
         }
     }
 
-    // $locationProvider.html5Mode(true);
+    var visualization = {
+        templateUrl: "mart-visual-enrichment/app/partials/mart-visual-enrichment.html"
+    }
 
     $routeProvider
         .when("/gui/:gui/", home)
-        // .otherwise("/");
+        .when("/visualization/", visualization)
+        .otherwise("/");
 
 }]);
 

@@ -45,15 +45,19 @@
 
     <script src="mart-visual-enrichment/app/lib/cytoscape.js"></script>
 
-    <!--
+    <!-- visualizations -->
     <script src="mart-visual-enrichment/app/js/services/tabs.js"></script>
     <script src="mart-visual-enrichment/app/js/services/terms-async.js"></script>
     <script src="mart-visual-enrichment/app/js/services/terms.js"></script>
     <script src="mart-visual-enrichment/app/js/services/data-retrieve.js"></script>
+
+    <script src="mart-visual-enrichment/app/js/controllers/visualization.js"></script>
+    <script src="mart-visual-enrichment/app/js/controllers/results-table.js"></script>
+    <script src="mart-visual-enrichment/app/js/controllers/graph.js"></script>
+
     <script src="mart-visual-enrichment/app/js/directives/mv-graph.js"></script>
     <script src="mart-visual-enrichment/app/js/directives/mv-results-table.js"></script>
-    <script src="mart-visual-enrichment/app/js/directives/loading.js"></script>
-    -->
+
 
 </body>
 </html>

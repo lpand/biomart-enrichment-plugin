@@ -1,5 +1,7 @@
  <div class="container-fluid" ng-controller="VisualizationCtrl">
-    <loading></loading>
+    <div ng-show="isLoading">
+        <h2>Loading...</h2>
+    </div>
     <tabset>
         <tab ng-repeat="mvTab in mvTabs">
           <tab-heading><a href="">{{mvTab.title}}</a></tab-heading>

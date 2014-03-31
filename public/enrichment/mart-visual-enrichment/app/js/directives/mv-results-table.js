@@ -9,7 +9,7 @@ directive("mvResultsTable",
           function ($rootScope) {
     return {
         restrict: "E",
-        templateUrl: "partials/table-of-results.html",
+        templateUrl: "mart-visual-enrichment/app/partials/table-of-results.html",
         link: function (scope, iElement, attrs) {
             function ln(evtName) {
                 return function (evt) {

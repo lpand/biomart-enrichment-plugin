@@ -9,8 +9,11 @@ app.controller("VisualizationCtrl",
 
     $scope.mvTabs = [];
 
+    $scope.isLoading = true;
+
     tabs.then(function (tabs) {
         $scope.mvTabs = tabs;
+        $scope.isLoading = false;
     });
 
 }]);

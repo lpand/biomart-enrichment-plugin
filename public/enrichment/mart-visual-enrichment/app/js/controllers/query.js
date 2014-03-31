@@ -23,7 +23,7 @@ QueryCtrl.prototype = {
         var ctrl = this;
         if (ctrl.validate()) {
             ctrl.buildQuery();
-            $loc.url(ctrl.config.visualizationUrl);
+            ctrl.$loc.url(ctrl.config.visualizationUrl);
         } else {
             ctrl.showError(ctrl.qv.errMessage());
         }
@@ -39,8 +39,6 @@ QueryCtrl.prototype = {
         this.$modal.open({
             template: '<div class="modal-header"><h2>XML</h2></div><div class="modal-body"><pre><code>"'+window.escapeHtmlEntities(xml)+'"</code></pre></div>'
         });
-
-
     },
 
 
@@ -50,21 +48,27 @@ QueryCtrl.prototype = {
 
 
     getXml: function build() {
-        return this.qb.getXml();
+        var ctrl = this;
+        return ctrl.qb.show.apply(ctrl.qb, ctrl.getBuildParamters());
     },
 
 
     buildQuery: function build () {
+        var ctrl = this, params = ctrl.getBuildParamters();
+        ctrl.qb.build.apply(ctrl.qb, params);
+    },
+
+
+    getBuildParamters: function bparams () {
         var ctrl = this, s = ctrl.$loc.search(), spec = s.species,
             cfg = s.config;
-        ctrl.qb.build(spec, cfg);
+        return [spec, cfg];
     },
 
 
     showQuery: function showQuery() {
         var ctrl = this;
         if (ctrl.validate()) {
-            ctrl.buildQuery();
             ctrl.openModal(ctrl.getXml());
         } else {
             ctrl.showError(ctrl.qv.errMessage());

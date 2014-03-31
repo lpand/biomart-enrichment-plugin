@@ -176,7 +176,7 @@ directive("mvGraph",
     return {
         restrict: "E",
         replace: true,
-        templateUrl: "partials/vis.html",
+        templateUrl: "mart-visual-enrichment/app/partials/vis.html",
         scope: {
             nodes: "=nodes",
             edges: "=edges",
