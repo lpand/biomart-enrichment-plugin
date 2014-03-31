@@ -1,8 +1,8 @@
 <div class="container">
     <div class="row">
         <div class="query-buttons col-md-4" ng-controller="QueryCtrl as ctrl">
-            <button class="btn btn-default" ng-click="ctrl.submit()">Submit</button>
             <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
+            <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
         </div>
         <div class="mve-species col-md-8" ng-controller="SpeciesCtrl">
             <h2>Input Species Available</h2>
@@ -93,9 +93,8 @@
                         <tab-heading>
                             <h3 ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">Annotations</h3>
                         </tab-heading>
-                        <div collapse="enr.annotationIsCollapsed">
-                            <div ng-class="mve-annotations"
-                                 ng-repeat="a in enr.getAttributes('annotation')"
+                        <div class="mve-annotations" collapse="enr.annotationIsCollapsed">
+                            <div ng-repeat="a in enr.getAttributes('annotation')"
                                  mv-attribute="a"></div>
                         </div>
                     </tab>

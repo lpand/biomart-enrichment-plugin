@@ -36,12 +36,14 @@ input[type=text] {
 }
 
 .mve-annotations {
-    border: 1px solid red;
-    padding: 20px;
+    padding: 2em 1em;
+}
+.mve-annotations input[type="checkbox"] {
+    margin: 0.8em 0.5em 0.8em 1.2em;
 }
 
 body {
-    margin: 20px auto 250px auto;
+    margin: 8em auto 12em auto;
 }
 
 
