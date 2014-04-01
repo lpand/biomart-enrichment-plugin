@@ -1,4 +1,5 @@
 ;(function (angular) {
+
 "use strict";
 
 var app = angular.module("martVisualEnrichment.controllers");
@@ -10,6 +11,7 @@ app.controller("EnrichmentCtrl",
                 "bmservice",
                 "findBioElement",
                 EnrichmentCtrl]);
+
 
 function EnrichmentCtrl($scope, $loc, $log, bm, find) {
 
