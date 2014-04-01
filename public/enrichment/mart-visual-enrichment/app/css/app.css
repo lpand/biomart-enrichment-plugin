@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Pacifico";
+
+  src: url("fonts/Pacifico.ttf");
+}
+
 body {
     margin: 0.2em auto 12em auto;
 }
@@ -52,9 +58,15 @@ input[type=text] {
 }
 
 .mve-title {
+    font-family: "Pacifico";
     font-size: 3.7em;
     margin-bottom: 3em;
     color: #303030;
+}
+
+.mve-perimeter {
+    border: 1px solid #556270;
+    border-radius: 15px;
 }
 
 .mve-select {
@@ -82,10 +94,12 @@ input[type=text] {
 
 @media (min-width: 1024px) {
 
-.query-buttons {
-    position: fixed;
-    top: 70px;
-    right: 0px;
-}
+    .query-buttons {
+        position: fixed;
+        top: 3em;
+        right: 6em;
+        border-bottom: 1px dashed #303030;
+        padding-bottom: 1.35em;
+    }
 
 }

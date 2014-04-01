@@ -19,14 +19,14 @@ gulp.task("ant", function () {
         })
 })
 
-gulp.task('lint', function() {
+gulp.task('lint-job', function() {
     gulp.src('app/js/**/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 })
 
-gulp.task("keep-lint", function () {
-    gulp.watch(srcPaths, ["lint"])
+gulp.task("lint", function () {
+    gulp.watch(srcPaths, ["lint-job"])
 })
 
-gulp.task("default", ["ant"])
+gulp.task("default", ["lint", "ant"])

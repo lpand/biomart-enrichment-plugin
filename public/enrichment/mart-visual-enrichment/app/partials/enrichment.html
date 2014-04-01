@@ -1,120 +1,120 @@
 <div class="container">
-    <div class="container">
-        <h1 class="mve-title">Enrichment</h1>
-        <div class="row">
-            <div class="query-buttons col-md-4" ng-controller="QueryCtrl as ctrl">
-                <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
-                <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
-            </div>
-            <div class="mve-species col-md-8" ng-controller="SpeciesCtrl">
-                <select class="form-control mve-select"
-                        ng-model="selectedSpecies"
-                        ng-options="s.displayName for s in species"
-                        ng-change="updateSpecies(selectedSpecies)">
-                </select>
+    <h1 class="mve-title">Enrichment</h1>
+        <div class="container">
+            <div class="row">
+                <div class="mve-species col-md-8" ng-controller="SpeciesCtrl">
+                    <div class="query-buttons" ng-controller="QueryCtrl as ctrl">
+                        <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
+                        <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
+                    </div>
+                    <select class="form-control mve-select"
+                            ng-model="selectedSpecies"
+                            ng-options="s.displayName for s in species"
+                            ng-change="updateSpecies(selectedSpecies)">
+                    </select>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="enrichment container" ng-controller="EnrichmentCtrl as enr">
+        <div class="enrichment container" ng-controller="EnrichmentCtrl as enr">
 
-        <!-- sets -->
-        <div class="row">
-            <div class="col-md-8">
-                <tabset>
-                    <tab active>
-                        <tab-heading>
-                            <h3>List of Genes</h3>
-                        </tab-heading>
-                        <div collapse="enr.setsIsCollapsed" mv-filter="{{enr.getFilter('sets')}}">
-                        </div>
-                    </tab>
-                    <tab>
-                        <tab-heading>
-                            <h3>BED File</h3>
-                        </tab-heading>
-                        <div class="col-md-8"
-                             mv-filter="{{enr.getFilter('bed_regions')}}">
-                         </div>
-                         <div class="col-md-4">
-                            <div mv-filter="{{enr.getFilter('upstream')}}">
+            <!-- sets -->
+            <div class="row">
+                <div class="col-md-8">
+                    <tabset>
+                        <tab active>
+                            <tab-heading>
+                                <h3>List of Genes</h3>
+                            </tab-heading>
+                            <div collapse="enr.setsIsCollapsed" mv-filter="{{enr.getFilter('sets')}}">
+                            </div>
+                        </tab>
+                        <tab>
+                            <tab-heading>
+                                <h3>BED File</h3>
+                            </tab-heading>
+                            <div class="col-md-8"
+                                 mv-filter="{{enr.getFilter('bed_regions')}}">
                              </div>
-                            <div mv-filter="{{enr.getFilter('downstream')}}">
+                             <div class="col-md-4">
+                                <div mv-filter="{{enr.getFilter('upstream')}}">
+                                 </div>
+                                <div mv-filter="{{enr.getFilter('downstream')}}">
+                                 </div>
                              </div>
-                         </div>
-                    </tab>
-                </tabset>
+                        </tab>
+                    </tabset>
+                </div>
             </div>
-        </div>
 
-        <!-- background -->
-        <div class="row">
-            <div class="col-md-8">
-                <hr/>
-                <tabset type="pills" justified="true">
-                    <tab>
-                        <tab-heading>
-                            <span class="collapse-symbol"
-                                  ng-click="enr.backgroundIsCollapsed = !enr.backgroundIsCollapsed">
-                                {{enr.backgroundIsCollapsed ? "+" : "–"}}
-                            </span>
-                            <h3 ng-click="enr.backgroundIsCollapsed = !enr.backgroundIsCollapsed">
-                                Background
-                            </h3>
-                        </tab-heading>
-                        <div collapse="enr.backgroundIsCollapsed" mv-filter="{{enr.getFilter('background')}}">
-                         </div>
-                    </tab>
-                </tabset>
+            <!-- background -->
+            <div class="row">
+                <div class="col-md-8">
+                    <hr/>
+                    <tabset type="pills" justified="true">
+                        <tab>
+                            <tab-heading>
+                                <span class="collapse-symbol"
+                                      ng-click="enr.backgroundIsCollapsed = !enr.backgroundIsCollapsed">
+                                    {{enr.backgroundIsCollapsed ? "+" : "–"}}
+                                </span>
+                                <h3 ng-click="enr.backgroundIsCollapsed = !enr.backgroundIsCollapsed">
+                                    Background
+                                </h3>
+                            </tab-heading>
+                            <div collapse="enr.backgroundIsCollapsed" mv-filter="{{enr.getFilter('background')}}">
+                             </div>
+                        </tab>
+                    </tabset>
+                </div>
             </div>
-        </div>
 
-        <!-- cutoff and the rest -->
-        <div class="row">
-            <div class="col-md-8">
-                <hr/>
-                <tabset type="pills" justified="true">
-                    <tab>
-                        <tab-heading>
-                            <span class="collapse-symbol"
-                                  ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">
-                                {{enr.cutoffIsCollapsed ? "+" : "–"}}
-                            </span>
-                            <h3 ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">
-                                Filters
-                            </h3>
-                        </tab-heading>
-                        <div collapse="enr.cutoffIsCollapsed">
-                            <div mv-filter="{{enr.getFilter('cutoff')}}"></div>
-                            <div mv-filter="{{enr.getFilter('gene_type')}}"></div>
-                            <div mv-filter="{{enr.getFilter('gene_limit')}}"></div>
-                            <div mv-filter="{{enr.getFilter('homolog')}}"></div>
-                        </div>
-                    </tab>
-                </tabset>
+            <!-- cutoff and the rest -->
+            <div class="row">
+                <div class="col-md-8">
+                    <hr/>
+                    <tabset type="pills" justified="true">
+                        <tab>
+                            <tab-heading>
+                                <span class="collapse-symbol"
+                                      ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">
+                                    {{enr.cutoffIsCollapsed ? "+" : "–"}}
+                                </span>
+                                <h3 ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">
+                                    Filters
+                                </h3>
+                            </tab-heading>
+                            <div collapse="enr.cutoffIsCollapsed">
+                                <div mv-filter="{{enr.getFilter('cutoff')}}"></div>
+                                <div mv-filter="{{enr.getFilter('gene_type')}}"></div>
+                                <div mv-filter="{{enr.getFilter('gene_limit')}}"></div>
+                                <div mv-filter="{{enr.getFilter('homolog')}}"></div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
             </div>
-        </div>
 
-        <!-- annotations -->
-        <div class="row">
-            <div class="col-md-8">
-                <hr/>
-                <tabset type="pills" justified="true">
-                    <tab>
-                        <tab-heading>
-                            <span class="collapse-symbol"
-                                  ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">
-                                {{enr.annotationIsCollapsed ? "+" : "–"}}
-                            </span>
-                            <h3 ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">Annotations</h3>
-                        </tab-heading>
-                        <div class="mve-annotations" collapse="enr.annotationIsCollapsed">
-                            <div ng-repeat="a in enr.getAttributes('annotation')"
-                                 mv-attribute="a"></div>
-                        </div>
-                    </tab>
-                </tabset>
+            <!-- annotations -->
+            <div class="row">
+                <div class="col-md-8">
+                    <hr/>
+                    <tabset type="pills" justified="true">
+                        <tab>
+                            <tab-heading>
+                                <span class="collapse-symbol"
+                                      ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">
+                                    {{enr.annotationIsCollapsed ? "+" : "–"}}
+                                </span>
+                                <h3 ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">Annotations</h3>
+                            </tab-heading>
+                            <div class="mve-annotations" collapse="enr.annotationIsCollapsed">
+                                <div ng-repeat="a in enr.getAttributes('annotation')"
+                                     mv-attribute="a"></div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
             </div>
         </div>
-    </div>
 </div>
