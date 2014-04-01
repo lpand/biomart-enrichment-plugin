@@ -17,7 +17,7 @@ app.controller("SpeciesCtrl", ["$scope", "$location",
     }
     this.updateSpecies = function (species) {
         $loc.search("species", species.name);
-    }
+    };
 
     $scope.updateSpecies = this.updateSpecies;
 

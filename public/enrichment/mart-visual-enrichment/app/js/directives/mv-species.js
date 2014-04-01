@@ -20,7 +20,7 @@ app.directive("mvSpecies", ["$location", function ($loc) {
             scope.updateSpecies = function (species) {
                 scope.currentSpeciesName = species.name;
                 $loc.search("species", species.name);
-            }
+            };
 
             function updateCurrentSpecies () {
                 var search = $loc.search(), s = search.species;
@@ -38,7 +38,7 @@ app.directive("mvSpecies", ["$location", function ($loc) {
                 }
             }
         }
-    }
+    };
 
 }]);
 

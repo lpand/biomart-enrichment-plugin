@@ -5,9 +5,9 @@
 angular.module("martVisualEnrichment.services").
 service("terms",
         ["termsAsync",
-        function termsService(termsAsync) {
+        function TermsService(TermsAsync) {
     this.get = function model (nodes) {
-        return new termsAsync(nodes);
+        return new TermsAsync(nodes);
     };
 }]);
 

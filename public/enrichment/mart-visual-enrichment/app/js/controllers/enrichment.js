@@ -64,7 +64,7 @@ EnrichmentCtrl.prototype = {
     getAttributes: function getAttributes(elmFunc) {
         return this.getElements(elmFunc, "attributes");
     }
-}
+};
 
 
 

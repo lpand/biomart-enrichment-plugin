@@ -10,12 +10,7 @@ app.controller("ResultsTableCtrl",
 
     var init = true;
     $scope.terms = terms.get($q.when($scope.mvTab.nodes));
-    $rootScope.$emit("enrichment.dataloading");
     $scope.terms.all().then(function (ts) {
-        if (init) {
-            $rootScope.$emit("enrichment.dataloaded");
-            init = false;
-        }
         $scope.results = ts;
     });
 

@@ -30,7 +30,7 @@ app.config(["$routeProvider",
                         return res.data.marts[0].config;
                     });
                 var species = config.then(function (config) {
-                        if (! ("config" in $loc.search())) $loc.search("config", config);
+                        if (! ("config" in $loc.search())) { $loc.search("config", config); }
                         return bm.datasets(config);
                     }).
                     then(function (res) {
@@ -60,7 +60,7 @@ app.config(["$routeProvider",
                 });
             }]
         }
-    }
+    };
 
     var visualization = {
         templateUrl: "mart-visual-enrichment/app/partials/mart-visual-enrichment.html"
@@ -87,7 +87,7 @@ app.config(["$routeProvider",
         //                 })
         //         }]
         // }
-    }
+    };
 
     $routeProvider
         .when("/gui/:gui/", home)
@@ -97,7 +97,7 @@ app.config(["$routeProvider",
 }]);
 
 app.run(function () {
-    if(typeof window.escapeHtmlEntities == 'undefined') {
+    if(typeof window.escapeHtmlEntities === 'undefined') {
         window.escapeHtmlEntities = function (text) {
             return text.replace(/[\u00A0-\u2666<>\&]/g, function(c) {
                 return '&' +
@@ -363,6 +363,6 @@ app.run(function () {
             8364 : 'euro'
         };
     }
-})
+});
 
 })(angular);

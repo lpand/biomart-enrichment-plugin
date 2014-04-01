@@ -5,9 +5,9 @@ var app = angular.module("martVisualEnrichment.services");
 
 app.factory("findBioElement", function() {
 
-    function finder (containers) {
-        if (!(this instanceof finder)) {
-            return new finder(containers);
+    function Finder (containers) {
+        if (!(this instanceof Finder)) {
+            return new Finder(containers);
         }
 
         this.coll = containers;
@@ -15,59 +15,58 @@ app.factory("findBioElement", function() {
     }
 
 
-    finder.prototype.addFunctions = function (funcs) {
+    Finder.prototype.addFunctions = function (funcs) {
         if (angular.isArray(funcs)) {
             funcs.forEach(function (k) {
-                if (!(k in this.funcs)) this.funcs[k] = {attributes: [], filters: []};
+                if (!(k in this.funcs)) {this.funcs[k] = {attributes: [], filters: []};}
             }, this);
         } else {
-            if (!(funcs in this.funcs)) this.funcs[funcs] = {attributes: [], filters: []};
+            if (!(funcs in this.funcs)) {this.funcs[funcs] = {attributes: [], filters: []};}
         }
 
         return this;
-    }
+    };
 
 
     // The containars form a tree
-    finder.prototype.find = function walk() {
+    Finder.prototype.find = function walk() {
         // The root
         var c, q = [this.coll];
         while (q.length) {
-            var c = q.shift();
-            if (c.attributes) this.inspectAttrs(c.attributes, this.funcs);
-            if (c.filters) this.inspectFilters(c.filters, this.funcs);
+            c = q.shift();
+            if (c.attributes) {this.inspectAttrs(c.attributes, this.funcs);}
+            if (c.filters) {this.inspectFilters(c.filters, this.funcs);}
             for (var i = 0; i < c.containers.length; ++i) {
                 q.push(c.containers[i]);
             }
         }
         return this.funcs;
-    }
+    };
 
 
-    finder.prototype.inspectAttrs = function (els, acc) {
+    Finder.prototype.inspectAttrs = function (els, acc) {
         this.inspect(els, acc, "attributes");
-    }
+    };
 
 
-    finder.prototype.inspectFilters = function (els, acc) {
+    Finder.prototype.inspectFilters = function (els, acc) {
         this.inspect(els, acc, "filters");
-    }
+    };
 
 
-    finder.prototype.inspect = function (els, acc, set) {
+    Finder.prototype.inspect = function (els, acc, set) {
         els.reduce(function fold (acc, e) {
             var f;
-            if ((f = e.function) in acc)
-                acc[f][set].push(e);
+            if ((f = e.function) in acc) { acc[f][set].push(e); }
             return acc;
         }, acc);
-    }
+    };
 
-    finder.prototype.getFunctionMap = function () {
+    Finder.prototype.getFunctionMap = function () {
         return this.funcs;
-    }
+    };
 
-    return finder;
+    return Finder;
 
 });
 

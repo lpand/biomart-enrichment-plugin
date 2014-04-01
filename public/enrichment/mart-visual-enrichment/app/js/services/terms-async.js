@@ -21,13 +21,13 @@ factory("termsAsync", function () {
         this.all = function () {
             this._clearFilters();
             return this;
-        }
+        };
 
         this._clearFilters = function () {
             this._filtered = null;
             this._filtered = this._all;
             return this;
-        }
+        };
 
         this.filterByDescription = function (desc) {
             if (desc && desc !== "") {
@@ -40,7 +40,7 @@ factory("termsAsync", function () {
                 });
             }
             return this;
-        }
+        };
 
         this.filterByScore = function (min, max) {
             this._filtered = this._filtered.then(function (terms) {
@@ -49,7 +49,7 @@ factory("termsAsync", function () {
                 });
             });
             return this;
-        }
+        };
 
         /**
          * Returns a promise that fulfils the filters previously applied.
@@ -59,8 +59,8 @@ factory("termsAsync", function () {
             var p = this._filtered.then(fn, errfn, progressfn);
             this._clearFilters();
             return p;
-        }
-    }
-})
+        };
+    };
+});
 
 })(angular);

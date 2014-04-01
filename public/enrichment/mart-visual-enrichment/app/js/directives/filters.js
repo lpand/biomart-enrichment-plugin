@@ -3,7 +3,7 @@
 
 
 function putTextPromise($q, evt) {
-    var d = $q.defer()
+    var d = $q.defer();
 
     var file = evt.target.files[0];
     if (file) {
@@ -11,10 +11,10 @@ function putTextPromise($q, evt) {
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
             d.resolve(evt.target.result);
-        }
+        };
         reader.onerror = function (evt) {
             d.reject("Error reading file");
-        }
+        };
 
         return d.promise;
     }
@@ -37,7 +37,7 @@ app.directive("uploadFilter",
             iElement.find("input").on("change", function onChange (evt) {
                 var p = putTextPromise($q, evt);
                 p.then(function then(text) {
-                    var v = text ? sanitize.stripTags(text) : null
+                    var v = text ? sanitize.stripTags(text) : null;
                     scope.setFilter(v);
                 }).catch(function rejected(reason) {
                     scope.setFilter();
@@ -48,9 +48,9 @@ app.directive("uploadFilter",
             scope.setFilter = function (value) {
                 scope.filter.value = scope.textareaValue = value ? value : "";
                 qb.setFilter(scope.filter.name, value && value !== "" ? scope.filter : null);
-            }
+            };
         }
-    }
+    };
 }]);
 
 
@@ -68,7 +68,7 @@ app.directive("singleSelectUploadFilter",
             iElement.find("input").on("change", function onChange (evt) {
                 var p = putTextPromise($q, evt);
                 p.then(function then(text) {
-                    var v = text ? sanitize.stripTags(text) : null
+                    var v = text ? sanitize.stripTags(text) : null;
                     scope.setFilter(v);
                 }).catch(function rejected(reason) {
                     scope.setFilter();
@@ -79,7 +79,7 @@ app.directive("singleSelectUploadFilter",
             scope.setFilter = function (value) {
                 scope.selected.value = scope.textareaValue = value ? value : "";
                 qb.setFilter(scope.selected.name, value && value !== "" ? scope.selected : null);
-            }
+            };
 
             scope.onSelect = function (selected) {
                 if (prevSelected !== selected) {
@@ -87,10 +87,10 @@ app.directive("singleSelectUploadFilter",
                     prevSelected = selected;
                     this.setFilter(this.textareaValue);
                 }
-            }
+            };
         }
 
-    }
+    };
 }]);
 
 
@@ -103,14 +103,13 @@ app.directive("textFilter",
         link: function (scope, iElement, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
             scope.set = function set (value) {
-                var v = angular.isString(scope.filterText) && scope.filterText !== ""
-                    ? sanitize.stripTags(value)
-                    : null;
+                var v = angular.isString(scope.filterText) && scope.filterText !== "" ?
+                    sanitize.stripTags(value) : null;
                 scope.filter.value = v;
                 qb.setFilter(scope.filter.name, v ? scope.filter : null);
-            }
+            };
         }
-    }
+    };
 }]);
 
 app.directive("booleanFilter",
@@ -124,9 +123,9 @@ app.directive("booleanFilter",
             scope.set = function set (value) {
                 scope.filter.value = value;
                 qb.setFilter(scope.filter.name, scope.filter);
-            }
+            };
         }
-    }
+    };
 }]);
 
 
@@ -143,18 +142,18 @@ app.directive("multiSelectFilter", [
             scope.options = scope.filter.values;
             scope.setFilter = function setFilter (values) {
                 if (values && values.length) {
-                    var vs = values.map(function (f) { return f.name });
+                    var vs = values.map(function (f) { return f.name; });
                     scope.filter.value = vs.join(",");
                     qb.setFilter(scope.filter.name, scope.filter);
                 } else {
                     qb.setFilter(scope.filter.name);
                 }
-            }
+            };
             scope.onSelect = function select (value) {
                 this.setFilter(value);
-            }
+            };
         }
-    }
+    };
 }]);
 
 
@@ -179,13 +178,13 @@ app.directive("singleSelectBooleanFilter", [
                     qb.setFilter(prevSelected.name);
                 }
                 prevSelected = filter;
-            }
+            };
 
             scope.onSelect = function select (value) {
                 this.setFilter(value);
-            }
+            };
         }
-    }
+    };
 }]);
 
 
@@ -205,15 +204,15 @@ app.directive("singleSelectFilter", [
                     scope.filter.value = value;
                     qb.setFilter(scope.filter.name, scope.filter);
                 } else {
-                    qb.setFilter(scope.filter.name)
+                    qb.setFilter(scope.filter.name);
                 }
-            }
+            };
 
             scope.onSelect = function select (value) {
                 this.setFilter(value);
-            }
+            };
         }
-    }
+    };
 }]);
 
 

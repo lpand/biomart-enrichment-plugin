@@ -20,9 +20,9 @@ app.directive("mvAttribute", [
                     } else {
                         qb.setAttribute(scope.attr.name);
                     }
-                }
+                };
             }
-        }
+        };
     }
 ]);
 

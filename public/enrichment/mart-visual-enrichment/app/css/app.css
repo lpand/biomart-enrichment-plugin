@@ -54,13 +54,15 @@ input[type=text] {
 .mve-title {
     font-size: 3.7em;
     margin-bottom: 3em;
+    color: #303030;
 }
 
 .mve-select {
     margin: 20px auto 20px auto;
 }
 
-.mve-filter h3 {
+.mve-filter h3, .mve-filter p {
+    margin-top: 1.5em;
     color: #4599BC;
 }
 

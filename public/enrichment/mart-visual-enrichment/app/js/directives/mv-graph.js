@@ -50,7 +50,7 @@ function style(cy) {
             "selection-box-opacity": 0.5,
             "selection-box-border-color": "#E273B1",
             "selection-box-border-width": 3
-        })
+        });
 }
 
 
@@ -58,12 +58,12 @@ function container($cont) {
     return $cont[0];
 }
 
-
 function formatEles(eles) {
     var strip = /\W/g;
     return eles.map(function (e) {
-        var id;
-        if (id = e["id"]) {
+        /* jshint sub:true */
+        var id = e["id"];
+        if (id) {
             e._id = id;
             e["id"] = id.replace(strip, '');
         }
@@ -78,9 +78,8 @@ function formatEles(eles) {
 function truncateDescr(eles) {
     eles.forEach(function (e) {
         var l = 16;
-        e.shortDesc = e.description.length > l
-            ? e.description.substr(0, l - 1) + "..."
-            : e.description;
+        e.shortDesc = e.description.length > l ?
+            e.description.substr(0, l - 1) + "..." : e.description;
     });
 }
 
@@ -105,6 +104,8 @@ function ready(scope) {
                 cy.elements().removeClass("faded link-hightlight");
             }
         });
+
+        scope.state.setState(scope.state.states.NETWORK);
     };
 }
 
@@ -132,14 +133,17 @@ function updateGraph(scope, pattern) {
 angular.module("martVisualEnrichment.directives").
 
 directive("mvGraph",
-          ["$rootScope",
-          function ($rootScope) {
-
+          ["$rootScope", "progressState", "$timeout",
+          function ($rootScope, state, $timeout) {
+    /* global cytoscape: false */
     function link (scope, iElement, iAttrs) {
+        scope.state = state;
         $rootScope.$on("term.mouseover", function (evt, term) {
+            /* jshint sub:true */
             cy.$("node#"+term["id"]).select();
         });
         $rootScope.$on("term.mouseout", function (evt, term) {
+            /* jshint sub:true */
             cy.$("node#"+term["id"]).unselect();
         });
         scope.$on("$destroy", function () {
@@ -174,8 +178,9 @@ directive("mvGraph",
         o.pan = {
             x: iElement.prop("clientWidth") / 2,
             y: iElement.prop("clientHeight") / 2
-        }
+        };
         var cy = cytoscape(o);
+
     }
     return {
         restrict: "E",
@@ -191,7 +196,7 @@ directive("mvGraph",
             tElement.css("height", h + "px");
             return link;
         }
-    }
+    };
 }]);
 
-})(angular);
+})(angular, cytoscape);

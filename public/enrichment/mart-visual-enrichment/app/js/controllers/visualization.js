@@ -4,11 +4,11 @@
 var app = angular.module("martVisualEnrichment.controllers");
 
 app.controller("VisualizationCtrl",
-           ["$scope", "queryBuilder", "bmservice",
-           function VisualizationCtrl ($scope, qb, bm) {
+           ["$scope", "queryBuilder", "bmservice", "progressState",
+           function VisualizationCtrl ($scope, qb, bm, state) {
     var ctrl = this, xml = qb.getXml();
 
-    var tabs = bm.query(xml, {cache: false}).
+    var tabs = bm.query(xml, {cache: true}).
         then(function then (res) {
             var graphs = res.data.graphs;
             return Object.keys(graphs).map(function (tabTitle) {
@@ -19,22 +19,22 @@ app.controller("VisualizationCtrl",
                     edges: g.edges
                 };
             });
-        })
+        });
 
     $scope.mvTabs = [];
+    $scope.progressbarValue = 33;
 
-    ctrl.state = function state(curr) {
-        $scope.currentState = curr;
-    }
+    ctrl.state = state;
 
-    ctrl.state("loading");
+    ctrl.state.setState(ctrl.state.states.GETTING_DATA);
 
     tabs.then(function (tabs) {
         $scope.mvTabs = tabs;
-        ctrl.state("loaded");
+        ctrl.state.setState(ctrl.state.states.PROCESSING);
     }, function (reason) {
         $scope.errorMessage = reason;
-        ctrl.state("error");
+        $scope.progressbarValue = 100;
+        ctrl.state.setState(ctrl.state.states.ERROR);
     });
 
 }]);

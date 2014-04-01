@@ -28,7 +28,7 @@ service("bmservice",
 
     this.datasets = function datasets(config, opt) {
         opt = opt || {};
-        var iUrl = url + "/datasets.json?config=" + config
+        var iUrl = url + "/datasets.json?config=" + config;
         return $http.get(iUrl, angular.extend({}, baseOpts, opt));
     };
 
@@ -39,24 +39,21 @@ service("bmservice",
         var fs = withFilters, as = withAttributes,
             iUrl = url + "/containers.json?datasets="+datasets+"&config="+ config;
 
-        if (angular.isDefined(fs)) iUrl += "&withfilters=" + !!fs;
-        if (angular.isDefined(as)) iUrl += "&withattributes=" + !!as;
+        if (angular.isDefined(fs)) { iUrl += "&withfilters=" + !!fs; }
+        if (angular.isDefined(as)) { iUrl += "&withattributes=" + !!as; }
         return $http.get(iUrl, angular.extend({}, baseOpts, opt));
     };
 
     this.query = function (xml, opt) {
-        opt = opt || {};
-        var opt = angular.extend({
+        var opts = angular.extend({
             params: { query: xml },
             // data: "query="+xml,
             headers: {
                 "Content-Type": "application/xml"
             }
-        }, baseOpts);
-        return $http.get(queryUrl, angular.extend({}, baseOpts, opt));
-    }
-
-
+        }, baseOpts,  opt);
+        return $http.get(queryUrl, opts);
+    };
 
 }]);
 

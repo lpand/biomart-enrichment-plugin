@@ -5,8 +5,8 @@ angular.module("martVisualEnrichment.directives").
 
 
 directive("mvResultsTable",
-          ["$rootScope",
-          function ($rootScope) {
+          ["$rootScope", "progressState",
+          function ($rootScope, state) {
     return {
         restrict: "E",
         templateUrl: "mart-visual-enrichment/app/partials/table-of-results.html",
@@ -25,13 +25,14 @@ directive("mvResultsTable",
                         var e = angular.element(t);
                         $rootScope.$emit(evtName, e.scope().term);
                     }
-                }
+                };
             }
 
             iElement.on("mouseover", ln("term.mouseover"));
             iElement.on("mouseout", ln("term.mouseout"));
+            state.setState(state.states.TABLE);
         }
-    }
+    };
 }]);
 
 })(angular);

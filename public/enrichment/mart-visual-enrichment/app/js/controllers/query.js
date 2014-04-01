@@ -13,7 +13,7 @@ function QueryCtrl($scope, $loc, win, qv, qb, bm, config, $modal) {
     ctrl.$modal = $modal;
     ctrl.qv = qv;
     ctrl.qb = qb;
-    ctrl.$loc = $loc
+    ctrl.$loc = $loc;
     ctrl.bm = bm;
     ctrl.config = config;
 }
@@ -74,7 +74,7 @@ QueryCtrl.prototype = {
             ctrl.showError(ctrl.qv.errMessage());
         }
     }
-}
+};
 
 
 })(angular);

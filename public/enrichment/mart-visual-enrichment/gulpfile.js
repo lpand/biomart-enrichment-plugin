@@ -1,5 +1,6 @@
 var gulp = require("gulp")
 var shell = require("shelljs/global")
+var jshint = require('gulp-jshint')
 
 gulp.task("compile", function () {
     var currDir = pwd();
@@ -16,5 +17,12 @@ gulp.task("watch", function () {
             console.log("File "+evt.path+" was "+evt.type+", running tasks...");
         })
 })
+
+
+gulp.task('lint', function() {
+    gulp.src('app/js/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
+});
 
 gulp.task("default", ["watch"])

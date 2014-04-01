@@ -21,20 +21,20 @@ factory("termsSync", function () {
     termsSync.prototype.all = function () {
         this._clearFilters();
         return this._filtered;
-    }
+    };
 
 
     termsSync.prototype.clear = function () {
         this._clearFilters();
         return this;
-    }
+    };
 
 
     termsSync.prototype._clearFilters = function () {
         this._filtered = null;
         this._filtered = this._all;
         return this;
-    }
+    };
 
 
     termsSync.prototype.filterByDescription = function (desc) {
@@ -46,7 +46,7 @@ factory("termsSync", function () {
             });
         }
         return this._filtered;
-    }
+    };
 
 
     termsSync.prototype.filterByScore = function (min, max) {
@@ -54,7 +54,7 @@ factory("termsSync", function () {
             return term["p-value"] >= min && term["p-value"] < max;
         });
         return this._filtered;
-    }
+    };
 
 
     return termsSync;

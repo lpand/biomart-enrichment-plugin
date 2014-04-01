@@ -9,10 +9,11 @@ app.directive("mvFilter", [function mvFilter () {
         templateUrl: "mart-visual-enrichment/app/partials/filter.html",
         scope: true,
         link: function (scope, elm, attrs) {
-            if (!attrs.mvFilter) return;
-            scope.filter = scope.$parent.$eval(attrs.mvFilter);
+            if (attrs.mvFilter) {
+                scope.filter = scope.$parent.$eval(attrs.mvFilter);
+            }
         }
-    }
+    };
 
  }]);
 

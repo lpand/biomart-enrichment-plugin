@@ -48,7 +48,9 @@
     <!-- visualizations -->
     <script src="mart-visual-enrichment/app/js/services/terms-async.js"></script>
     <script src="mart-visual-enrichment/app/js/services/terms.js"></script>
+    <script src="mart-visual-enrichment/app/js/services/progress-state.js"></script>
 
+    <script src="mart-visual-enrichment/app/js/controllers/progress.js"></script>
     <script src="mart-visual-enrichment/app/js/controllers/visualization.js"></script>
     <script src="mart-visual-enrichment/app/js/controllers/results-table.js"></script>
     <script src="mart-visual-enrichment/app/js/controllers/graph.js"></script>

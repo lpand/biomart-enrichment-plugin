@@ -8,7 +8,7 @@ var app = angular.module("martVisualEnrichment.controllers");
 app.controller("GraphCtrl",
            ["$scope", "$timeout",
            function ($scope, $timeout) {
-    var timeout = null
+    var timeout = null;
     $scope.nodes = $scope.mvTab.nodes;
     $scope.edges = $scope.mvTab.edges;
 
