@@ -1,16 +1,18 @@
 <div class="container">
-    <div class="row">
-        <div class="query-buttons col-md-4" ng-controller="QueryCtrl as ctrl">
-            <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
-            <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
-        </div>
-        <div class="mve-species col-md-8" ng-controller="SpeciesCtrl">
-            <h2>Input Species Available</h2>
-            <select class="form-control mve-select"
-                    ng-model="selectedSpecies"
-                    ng-options="s.displayName for s in species"
-                    ng-change="updateSpecies(selectedSpecies)">
-            </select>
+    <div class="container">
+        <h1 class="mve-title">Enrichment</h1>
+        <div class="row">
+            <div class="query-buttons col-md-4" ng-controller="QueryCtrl as ctrl">
+                <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
+                <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
+            </div>
+            <div class="mve-species col-md-8" ng-controller="SpeciesCtrl">
+                <select class="form-control mve-select"
+                        ng-model="selectedSpecies"
+                        ng-options="s.displayName for s in species"
+                        ng-change="updateSpecies(selectedSpecies)">
+                </select>
+            </div>
         </div>
     </div>
 
@@ -19,8 +21,7 @@
         <!-- sets -->
         <div class="row">
             <div class="col-md-8">
-                <h2>Select one of these inputs</h2>
-                <tabset type="pills" justified="true">
+                <tabset>
                     <tab active>
                         <tab-heading>
                             <h3>List of Genes</h3>
@@ -53,6 +54,10 @@
                 <tabset type="pills" justified="true">
                     <tab>
                         <tab-heading>
+                            <span class="collapse-symbol"
+                                  ng-click="enr.backgroundIsCollapsed = !enr.backgroundIsCollapsed">
+                                {{enr.backgroundIsCollapsed ? "+" : "–"}}
+                            </span>
                             <h3 ng-click="enr.backgroundIsCollapsed = !enr.backgroundIsCollapsed">
                                 Background
                             </h3>
@@ -71,7 +76,13 @@
                 <tabset type="pills" justified="true">
                     <tab>
                         <tab-heading>
-                            <h3 ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">Cutoff</h3>
+                            <span class="collapse-symbol"
+                                  ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">
+                                {{enr.cutoffIsCollapsed ? "+" : "–"}}
+                            </span>
+                            <h3 ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">
+                                Filters
+                            </h3>
                         </tab-heading>
                         <div collapse="enr.cutoffIsCollapsed">
                             <div mv-filter="{{enr.getFilter('cutoff')}}"></div>
@@ -91,6 +102,10 @@
                 <tabset type="pills" justified="true">
                     <tab>
                         <tab-heading>
+                            <span class="collapse-symbol"
+                                  ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">
+                                {{enr.annotationIsCollapsed ? "+" : "–"}}
+                            </span>
                             <h3 ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">Annotations</h3>
                         </tab-heading>
                         <div class="mve-annotations" collapse="enr.annotationIsCollapsed">
