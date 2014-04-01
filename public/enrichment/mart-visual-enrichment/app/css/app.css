@@ -1,7 +1,11 @@
 @font-face {
   font-family: "Pacifico";
-
   src: url("fonts/Pacifico.ttf");
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("fonts/Open_Sans/OpenSans-Italic.ttf");
 }
 
 body {
@@ -9,7 +13,8 @@ body {
 }
 
 h1, h2, h3, h4 {
-    color: #E94E77;
+    font-family: OpenSans;
+    color: #d45354;
 }
 
 .left-panel {
@@ -75,7 +80,8 @@ input[type=text] {
 
 .mve-filter h3, .mve-filter p {
     margin-top: 1.5em;
-    color: #4599BC;
+    font-weight: bold;
+    color: #2fcad8;
 }
 
 
