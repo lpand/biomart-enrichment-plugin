@@ -65,29 +65,6 @@ app.config(["$routeProvider",
 
     var visualization = {
         templateUrl: "mart-visual-enrichment/app/partials/mart-visual-enrichment.html"
-        // resolve: {
-        //     tabs: [
-        //         "queryBuilder",
-        //         "bmservice",
-        //         function tabs(qb, bm) {
-        //             var xml = qb.getXml();
-        //             return bm.query(xml, {cache: false}).
-        //                 then(function then (res) {
-        //                     var graphs = res.data.graphs;
-        //                     return Object.keys(graphs).map(function (tabTitle) {
-        //                         var g = graphs[tabTitle];
-        //                         return {
-        //                             title: tabTitle,
-        //                             nodes: g.nodes,
-        //                             edges: g.edges
-        //                         };
-        //                     });
-        //                 }, function rejected (res) {
-        //                     $log.error("The results request went wrong: ", res.status);
-        //                     return res;
-        //                 })
-        //         }]
-        // }
     };
 
     $routeProvider
@@ -96,6 +73,17 @@ app.config(["$routeProvider",
         .otherwise("/");
 
 }]);
+
+
+app.config(["$localForageProvider", function ($localForageProvider) {
+    $localForageProvider.config({
+        name        : "mve", // name of the database and prefix for your data
+        storeName   : 'keyvaluepairs', // name of the table
+        description : 'query parameters for enrichment'
+    });
+}]);
+
+
 
 app.run(function () {
     if(typeof window.escapeHtmlEntities === 'undefined') {
