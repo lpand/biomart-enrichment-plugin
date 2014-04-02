@@ -8,7 +8,7 @@ app.controller("VisualizationCtrl",
            function VisualizationCtrl ($scope, qb, bm, state) {
     var ctrl = this, xml = qb.getXml();
 
-    var tabs = bm.query(xml, {cache: true}).
+    var tabs = bm.query(xml, {cache: false}).
         then(function then (res) {
             var graphs = res.data.graphs;
             return Object.keys(graphs).map(function (tabTitle) {
