@@ -4,6 +4,7 @@
 var app = angular.module("martVisualEnrichment", [
     "ngRoute",
     "ui.bootstrap",
+    "LocalForageModule",
     "martVisualEnrichment.services",
     "martVisualEnrichment.controllers",
     "martVisualEnrichment.directives"

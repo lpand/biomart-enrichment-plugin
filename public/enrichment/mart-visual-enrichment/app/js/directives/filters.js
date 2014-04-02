@@ -1,6 +1,92 @@
 ;(function (angular) {
 "use strict";
 
+var app = angular.module("martVisualEnrichment.directives");
+var partialsDir = "mart-visual-enrichment/app/partials";
+
+app.controller("FilterCtrl", FilterCtrl);
+
+FilterCtrl.$inject = ["$q", "$location", "$localForage", "queryBuilder"];
+
+function FilterCtrl($q, $loc, $db, qub) {
+    var ctrl = this;
+    ctrl.$q = $q;
+    ctrl.$loc = $loc;
+    ctrl.$db = $db;
+    ctrl.qub = qub;
+}
+
+FilterCtrl.prototype = {
+    // name must be a string key.
+    // returns a promise that fulfills if there is the value for this key,
+    // rejects if there is not.
+    // It reads the URL query first, then the db.
+    read: function readFilterValue(name) {
+        var ctrl = this;
+        var def = ctrl.$q.defer();
+        var search = null, value;
+        if (angular.isString(name)) {
+            search = ctrl.$loc.search();
+            value = search[name] || ctrl.$db.getItem(name);
+            if (angular.isDefined(value)) {
+                def.resolve(value);
+            } else {
+                def.reject("no value for "+name+" key");
+            }
+        } else {
+            def.reject("name must be a string");
+        }
+
+        return def.promise;
+    },
+
+    hasName: function hasName(filter) {
+        return !!filter.name;
+    },
+
+    hasValue: function hasValue(filter) {
+        return angular.isDefined(filter.value) && filter.value !== null;
+    },
+
+    // This functions takes a Filter object representing a Biomart filter that must
+    // have the following props:
+    // {
+    //     name: "string",
+    //     value: "any"
+    // }
+    // Return a promise
+    // It updates the db. If filter.value is null then it removes the filter.
+    updateDb: function updateFilterValueDB(filter) {
+        var ctrl = this, value;
+        if (ctrl.hasName(filter)) {
+            if (ctrl.hasValue(filter)) {
+                ctrl.$db.setItem(filter.name, filter.value);
+            } else {
+                ctrl.$db.removeItem(filter.name);
+            }
+        }
+    },
+
+    // It updates the URL. If filter.value is null then it removes the filter. e.g.:
+    // filter.value = [1, "foo", 2]
+    // updateFilterValueURL(filter).then((value) => {
+    //      expect(value).to.eql("1,foo,2");
+    // }, () => { /* rejected because it is not of proper type */ })
+    // Object value is not supported yet.
+    updateURL: function updateFilterValueURL(filter) {},
+
+    // If filter.value is null then it removes the filter.
+    updateQuery: function updateFilterValueQuery(filter) {}
+
+
+};
+
+
+
+
+
+
+
 
 function putTextPromise($q, evt) {
     var d = $q.defer();
@@ -22,9 +108,6 @@ function putTextPromise($q, evt) {
     return d.reject("No file provided");
 }
 
-
-var app = angular.module("martVisualEnrichment.directives");
-var partialsDir = "mart-visual-enrichment/app/partials";
 
 app.directive("uploadFilter",
           ["$q", "queryBuilder", "sanitize", function ($q, qb, sanitize) {
@@ -75,6 +158,10 @@ app.directive("singleSelectUploadFilter",
                     scope.textareaValue = reason;
                 });
             });
+
+            scope.csv = function (text) {
+                return text.split("\n").join(",");
+            };
 
             scope.setFilter = function (value) {
                 scope.selected.value = scope.textareaValue = value ? value : "";

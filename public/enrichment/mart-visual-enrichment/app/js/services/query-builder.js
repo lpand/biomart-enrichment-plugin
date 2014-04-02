@@ -64,12 +64,12 @@ app.service("queryBuilder",
     };
 
     this.build = function (dataset, config) {
-        var limit = -1, header = true, client = true;
+        var limit = -1, header = true, client = "true";
         return this.xml = xml(dataset, config, this.filters, this.attrs, "TSV", limit, header, client);
     };
 
     this.show = function (dataset, config) {
-        var limit = -1, header = true, client = false;
+        var limit = -1, header = true, client = "false";
         return this.xml = xml(dataset, config, this.filters, this.attrs, "TSV", limit, header, client);
     };
 

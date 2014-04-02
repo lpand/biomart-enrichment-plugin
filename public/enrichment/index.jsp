@@ -21,6 +21,8 @@
     <script src="mart-visual-enrichment/app/lib/angular/angular.js"></script>
     <script src="mart-visual-enrichment/app/lib/angular/angular-route.js"></script>
     <script type="text/javascript" src="mart-visual-enrichment/app/lib/ui-bootstrap-tpls-0.10.0.js"></script>
+    <script src="mart-visual-enrichment/app/lib/localforage.js"></script>
+    <script src="mart-visual-enrichment/app/lib/angular-localForage.js"></script>
 
     <script src="mart-visual-enrichment/app/js/app.js"></script>
 
