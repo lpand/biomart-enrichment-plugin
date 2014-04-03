@@ -10,16 +10,18 @@ app.controller("EnrichmentCtrl",
                 "$log",
                 "bmservice",
                 "findBioElement",
+                "$localForage",
                 EnrichmentCtrl]);
 
 
-function EnrichmentCtrl($scope, $loc, $log, bm, find) {
+function EnrichmentCtrl($scope, $loc, $log, bm, find, store) {
 
     var ctrl = this;
     ctrl.$loc = $loc;
     ctrl.$log = $log;
     ctrl.bm = bm;
     ctrl.find = find;
+    ctrl.store = store;
     ctrl.containers = $scope.containers;
     ctrl.init();
 
@@ -31,10 +33,36 @@ EnrichmentCtrl.prototype = {
         ctrl.reqs = ["cutoff", "bonferroni", "bed_regions", "sets", "background", "upstream", "downstream", "gene_type",
                      "gene_limit", "homolog", "annotation"];
         ctrl.enElementValues = ctrl.findElements(ctrl.containers);
-        ctrl.setsIsCollapsed = false;
-        ctrl.backgroundIsCollapsed = true;
-        ctrl.cutoffIsCollapsed = true;
-        ctrl.annotationIsCollapsed = true;
+
+        ctrl.store.getItem("background.collapsed").then(function (c) {
+            var v = true;
+            if (c === false) { v = false; }
+            ctrl.backgroundIsCollapsed = v;
+        });
+        ctrl.store.getItem("cutoff.collapsed").then(function (c) {
+            ctrl.cutoffIsCollapsed = c || false;
+        });
+        ctrl.store.getItem("annotation.collapsed").then(function (c) {
+            ctrl.annotationIsCollapsed = c || false;
+        });
+    },
+
+    onClickBackground: function () {
+        var ctrl = this;
+        ctrl.backgroundIsCollapsed = !ctrl.backgroundIsCollapsed;
+        ctrl.store.setItem("background.collapsed", ctrl.backgroundIsCollapsed);
+    },
+
+    onClickCutoff: function () {
+        var ctrl = this;
+        ctrl.cutoffIsCollapsed = !ctrl.cutoffIsCollapsed;
+        ctrl.store.setItem("cutoff.collapsed", ctrl.cutoffIsCollapsed);
+    },
+
+    onClickAnnotation: function () {
+        var ctrl = this;
+        ctrl.annotationIsCollapsed = !ctrl.annotationIsCollapsed;
+        ctrl.store.setItem("annotation.collapsed", ctrl.annotationIsCollapsed);
     },
 
 

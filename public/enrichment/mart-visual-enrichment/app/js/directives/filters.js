@@ -27,13 +27,17 @@ function putTextPromise($q, evt) {
 
 
 app.directive("uploadFilter",
-          ["$q", "queryBuilder", "sanitize", function ($q, qb, sanitize) {
+          ["$q", "queryStore", "sanitize", function ($q, qs, sanitize) {
     return {
         restrict: "E",
         templateUrl: partialsDir + "/upload-filter.html",
         scope: {},
         link: function (scope, iElement, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
+            // Get data from storage.
+            qs.filter(scope.filter.name).then(function (text) {
+                scope.textareaValue = text;
+            });
             iElement.find("input").on("change", function onChange (evt) {
                 var p = putTextPromise($q, evt);
                 p.then(function then(text) {
@@ -47,7 +51,7 @@ app.directive("uploadFilter",
 
             scope.setFilter = function (value) {
                 scope.filter.value = scope.textareaValue = value ? value : "";
-                qb.setFilter(scope.filter.name, value && value !== "" ? scope.filter : null);
+                qs.filter(scope.filter.name, value && value !== "" ? value : null);
             };
         }
     };
@@ -55,16 +59,48 @@ app.directive("uploadFilter",
 
 
 app.directive("singleSelectUploadFilter",
-          ["$q", "queryBuilder", "sanitize", function ($q, qb, sanitize) {
+          ["$q", "queryStore", "sanitize", "$location", function ($q, qs, sanitize, $loc) {
     return {
         restrict: "E",
         templateUrl: partialsDir + "/single-select-upload-filter.html",
         scope: {},
         link: function (scope, iElement, attrs) {
-            var prevSelected;
+            var prevSelected, ownProp = Object.prototype.hasOwnProperty,
+                search = $loc.search(), dsPromise, fName;
             scope.filter = scope.$parent.$eval(attrs.filter);
             scope.options = scope.filter.filters;
-            prevSelected = scope.selected = scope.options[0];
+            if (fName = search[scope.filter.function]) {
+                dsPromise = qs.filter(fName).
+                    then(function (val) {
+                        for (var i = 0, len = scope.options.length; i < len; ++i) {
+                            if (scope.options[i].name === fName) {
+                                prevSelected = scope.options[i];
+                                scope.textareaValue = val;
+                                return prevSelected;
+                            }
+                        }
+                    });
+            } else {
+                dsPromise = qs.allFilters().then(function (all) {
+                    for (var f in all) {
+                        if (ownProp.call(all, f)) {
+                            if (prevSelected) { break; }
+                            for (var i = 0, len = scope.options.length; i < len; ++i) {
+                                if (scope.options[i].name === f) {
+                                    prevSelected = scope.options[i];
+                                    scope.textareaValue = all[f];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    return prevSelected;
+                });
+            }
+            dsPromise.then(function (selected) {
+                scope.selected = selected ? selected : scope.options[0];
+                prevSelected = scope.selected;
+            });
             iElement.find("input").on("change", function onChange (evt) {
                 var p = putTextPromise($q, evt);
                 p.then(function then(text) {
@@ -82,12 +118,18 @@ app.directive("singleSelectUploadFilter",
 
             scope.setFilter = function (value) {
                 scope.selected.value = scope.textareaValue = value ? value : "";
-                qb.setFilter(scope.selected.name, value && value !== "" ? scope.selected : null);
+                $loc.search(scope.filter.function, value ? scope.selected.name : null);
+                if (!value) {
+                    var input = iElement.find("input");
+                    input.val("");
+                }
+                qs.filter(scope.selected.name, value);
             };
 
             scope.onSelect = function (selected) {
                 if (prevSelected !== selected) {
-                    qb.setFilter(prevSelected.name, null);
+                    // $loc.search(scope.filter.function, null);
+                    qs.filter(prevSelected.name, null);
                     prevSelected = selected;
                     this.setFilter(this.textareaValue);
                 }
@@ -99,43 +141,56 @@ app.directive("singleSelectUploadFilter",
 
 
 app.directive("textFilter",
-          ["queryBuilder", "sanitize", function (qb, sanitize) {
+          ["queryStore", "$location", "sanitize", function (qs, $loc, sanitize) {
     return {
         restrict: "E",
         templateUrl: partialsDir + "/text-filter.html",
         scope: {},
         link: function (scope, iElement, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
-            scope.set = function set (value) {
-                var v = angular.isString(scope.filterText) && scope.filterText !== "" ?
+            var s = $loc.search()[scope.filter.function];
+            scope.set = function set (value, update) {
+                var v = angular.isString(value) && value !== "" ?
                     sanitize.stripTags(value) : null;
                 scope.filter.value = v;
-                qb.setFilter(scope.filter.name, v ? scope.filter : null);
+                if (!update) {
+                    $loc.search(scope.filter.function, v ? v : null);
+                }
+                scope.filterText = v;
+                qs.filter(scope.filter.name, v && v !== "" ? v : null);
             };
+
+            if (s) {
+                scope.set(s, true);
+            }
         }
     };
 }]);
 
 app.directive("booleanFilter",
-          ["queryBuilder", function booleanFilter (qb) {
+          ["queryStore", "$location", function booleanFilter (qs, $loc) {
     return {
         restrict: "E",
         templateUrl: partialsDir + "/boolean-filter.html",
         scope: {},
         link: function (scope, iElement, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
+            var fnValue = $loc.search()[scope.filter.function];
             scope.set = function set (value) {
                 scope.filter.value = value;
-                qb.setFilter(scope.filter.name, scope.filter);
+                $loc.search(scope.filter.function, value);
+                qs.filter(scope.filter.name, value);
             };
+
+            scope.set(scope.choice = fnValue || "excluded");
         }
     };
 }]);
 
 
 app.directive("multiSelectFilter", [
-              "queryBuilder",
-              function multiSelectFilter (qb) {
+              "queryStore", "$location",
+              function multiSelectFilter (qs, $loc) {
 
     return {
         restrict: "E",
@@ -143,43 +198,48 @@ app.directive("multiSelectFilter", [
         scope: {},
         link: function link(scope, elem, attrs) {
             scope.filter = scope.$parent.$eval(attrs.filter);
+            var fnValue = $loc.search()[scope.filter.function];
             scope.options = scope.filter.values;
             scope.setFilter = function setFilter (values) {
                 if (values && values.length) {
                     var vs = values.map(function (f) { return f.name; });
                     scope.filter.value = vs.join(",");
-                    qb.setFilter(scope.filter.name, scope.filter);
+                    qs.filter(scope.filter.name, scope.filter.value);
                 } else {
-                    qb.setFilter(scope.filter.name);
+                    qs.filter(scope.filter.name);
                 }
             };
             scope.onSelect = function select (value) {
                 this.setFilter(value);
             };
+            if (fnValue) {
+                scope.selected = fnValue;
+            }
         }
     };
 }]);
 
 
 app.directive("singleSelectBooleanFilter", [
-              "queryBuilder",
-              function multiSelectFilter (qb) {
+              "queryStore", "$location",
+              function multiSelectFilter (qs, $loc) {
 
     return {
         restrict: "E",
         templateUrl: partialsDir + "/single-select-boolean-filter.html",
         scope: {},
         link: function link(scope, elem, attrs) {
-            var prevSelected = scope.selected;
+            var prevSelected = scope.selected, fnValue;
             scope.filter = scope.$parent.$eval(attrs.filter);
             scope.options = scope.filter.filters;
+            // fnValue = $loc.search()[scope.filter.function];
             scope.setFilter = function setFilter (filter) {
-                if (filter && prevSelected !== filter) {
-                    filter.value = "only";
-                    qb.setFilter(filter.name, filter);
+                if (filter) {
+                    $loc.search(scope.filter.function, "only");
+                    qs.filter(filter.name, "only");
                 }
                 if (prevSelected) {
-                    qb.setFilter(prevSelected.name);
+                    qs.filter(prevSelected.name);
                 }
                 prevSelected = filter;
             };
@@ -187,6 +247,10 @@ app.directive("singleSelectBooleanFilter", [
             scope.onSelect = function select (value) {
                 this.setFilter(value);
             };
+
+            // if (fnValue) {
+            //     scope.setFilter(fnValue);
+            // }
         }
     };
 }]);

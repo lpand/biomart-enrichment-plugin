@@ -14,6 +14,7 @@ app.config(["$routeProvider",
             function routes ($routeProvider) {
 
     var home = {
+        reloadOnSearch: false,
         controller: [
             "$scope",
             "coll",
@@ -77,6 +78,7 @@ app.config(["$routeProvider",
 
 app.config(["$localForageProvider", function ($localForageProvider) {
     $localForageProvider.config({
+        driver      : "sessionStorage",
         name        : "mve", // name of the database and prefix for your data
         storeName   : 'keyvaluepairs', // name of the table
         description : 'query parameters for enrichment'

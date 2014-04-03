@@ -26,7 +26,7 @@
                             <tab-heading>
                                 <h3>List of Genes</h3>
                             </tab-heading>
-                            <div collapse="enr.setsIsCollapsed" mv-filter="{{enr.getFilter('sets')}}">
+                            <div mv-filter="{{enr.getFilter('sets')}}">
                             </div>
                         </tab>
                         <tab>
@@ -55,10 +55,10 @@
                         <tab>
                             <tab-heading>
                                 <span class="collapse-symbol"
-                                      ng-click="enr.backgroundIsCollapsed = !enr.backgroundIsCollapsed">
+                                      ng-click="enr.onClickBackground()">
                                     {{enr.backgroundIsCollapsed ? "+" : "–"}}
                                 </span>
-                                <h3 ng-click="enr.backgroundIsCollapsed = !enr.backgroundIsCollapsed">
+                                <h3 ng-click="enr.onClickBackground()">
                                     Background
                                 </h3>
                             </tab-heading>
@@ -77,15 +77,16 @@
                         <tab>
                             <tab-heading>
                                 <span class="collapse-symbol"
-                                      ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">
+                                      ng-click="enr.onClickCutoff()">
                                     {{enr.cutoffIsCollapsed ? "+" : "–"}}
                                 </span>
-                                <h3 ng-click="enr.cutoffIsCollapsed = !enr.cutoffIsCollapsed">
+                                <h3 ng-click="enr.onClickCutoff()">
                                     Filters
                                 </h3>
                             </tab-heading>
                             <div collapse="enr.cutoffIsCollapsed">
                                 <div mv-filter="{{enr.getFilter('cutoff')}}"></div>
+                                <div mv-filter="{{enr.getFilter('bonferroni')}}"></div>
                                 <div mv-filter="{{enr.getFilter('gene_type')}}"></div>
                                 <div mv-filter="{{enr.getFilter('gene_limit')}}"></div>
                                 <div mv-filter="{{enr.getFilter('homolog')}}"></div>
@@ -103,10 +104,10 @@
                         <tab>
                             <tab-heading>
                                 <span class="collapse-symbol"
-                                      ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">
+                                      ng-click="enr.onClickAnnotation()">
                                     {{enr.annotationIsCollapsed ? "+" : "–"}}
                                 </span>
-                                <h3 ng-click="enr.annotationIsCollapsed = !enr.annotationIsCollapsed">Annotations</h3>
+                                <h3 ng-click="enr.onClickAnnotation()">Annotations</h3>
                             </tab-heading>
                             <div class="mve-annotations" collapse="enr.annotationIsCollapsed">
                                 <div ng-repeat="a in enr.getAttributes('annotation')"

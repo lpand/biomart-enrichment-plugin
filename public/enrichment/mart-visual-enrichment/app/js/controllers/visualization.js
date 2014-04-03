@@ -6,18 +6,20 @@ var app = angular.module("martVisualEnrichment.controllers");
 app.controller("VisualizationCtrl",
            ["$scope", "queryBuilder", "bmservice", "progressState",
            function VisualizationCtrl ($scope, qb, bm, state) {
-    var ctrl = this, xml = qb.getXml();
+    var ctrl = this;
 
-    var tabs = bm.query(xml, {cache: false}).
-        then(function then (res) {
-            var graphs = res.data.graphs;
-            return Object.keys(graphs).map(function (tabTitle) {
-                var g = graphs[tabTitle];
-                return {
-                    title: tabTitle,
-                    nodes: g.nodes,
-                    edges: g.edges
-                };
+    var tabs = qb.build().then(function (xml) {
+        bm.query(xml, {cache: false}).
+            then(function then (res) {
+                var graphs = res.data.graphs;
+                return Object.keys(graphs).map(function (tabTitle) {
+                    var g = graphs[tabTitle];
+                    return {
+                        title: tabTitle,
+                        nodes: g.nodes,
+                        edges: g.edges
+                    };
+                });
             });
         });
 

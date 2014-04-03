@@ -5,8 +5,8 @@ var app = angular.module("martVisualEnrichment.controllers");
 
 app.controller("QueryCtrl", QueryCtrl);
 
-QueryCtrl.$inject = [ "$scope", "$location", "$window", "queryValidator", "queryBuilder", "bmservice", "mvConfig", "$modal"];
-function QueryCtrl($scope, $loc, win, qv, qb, bm, config, $modal) {
+QueryCtrl.$inject = [ "$scope", "$location", "$window", "queryValidator", "queryBuilder", "bmservice", "mvConfig", "$modal", "queryStore"];
+function QueryCtrl($scope, $loc, win, qv, qb, bm, config, $modal, qs) {
     var ctrl = this;
 
     ctrl.win = win;
@@ -16,6 +16,7 @@ function QueryCtrl($scope, $loc, win, qv, qb, bm, config, $modal) {
     ctrl.$loc = $loc;
     ctrl.bm = bm;
     ctrl.config = config;
+    ctrl.qs = qs;
 }
 
 QueryCtrl.prototype = {
@@ -43,13 +44,7 @@ QueryCtrl.prototype = {
 
 
     validate: function validate() {
-        return this.qv.validate(this.qb.getElements());
-    },
-
-
-    getXml: function build() {
-        var ctrl = this;
-        return ctrl.qb.show.apply(ctrl.qb, ctrl.getBuildParamters());
+        return this.qv.validate();
     },
 
 
@@ -62,6 +57,8 @@ QueryCtrl.prototype = {
     getBuildParamters: function bparams () {
         var ctrl = this, s = ctrl.$loc.search(), spec = s.species,
             cfg = s.config;
+        ctrl.qs.config(cfg);
+        ctrl.qs.dataset(spec);
         return [spec, cfg];
     },
 
@@ -69,7 +66,9 @@ QueryCtrl.prototype = {
     showQuery: function showQuery() {
         var ctrl = this;
         if (ctrl.validate()) {
-            ctrl.openModal(ctrl.getXml());
+            ctrl.qb.show(ctrl.getBuildParamters()).then(function (xml) {
+                ctrl.openModal(xml);
+            });
         } else {
             ctrl.showError(ctrl.qv.errMessage());
         }

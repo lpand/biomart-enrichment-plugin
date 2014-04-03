@@ -24,7 +24,7 @@ function QueryStore($q, $loc, $localForage) {
 QueryStore.prototype = {
 
     init: function () {
-        var self = this, db = this._getDb();
+        var self = this, db = this.getDb();
         db.getItem(this._attrKeys).then(function (val) {
             if (!self._hasValue(val)) {
                 db.setItem(self._attrKeys, []);
@@ -49,12 +49,8 @@ QueryStore.prototype = {
         return !(angular.isUndefined(value) || value === null);
     },
 
-    _getDb: function _getIt () {
-        return this.$localForage;
-    },
-
     _coll: function _coll(collKey) {
-        var db = this._getDb(), self = this;
+        var db = this.getDb(), self = this;
         return db.getItem(collKey).then(function keysFn (keys) {
             var values = keys.reduce(function pValue(m, k) {
                 m[k] = db.getItem(k);
@@ -71,14 +67,14 @@ QueryStore.prototype = {
     },
 
     _param: function _slParam (key, value) {
-        var db = this._getDb();
+        var db = this.getDb();
         return this._hasValue(name) ?
                 // create/replace it, otheiwise remove it
                 db.setItem(key, value) : db.removeItem(key);
     },
 
     _elem: function (collKey, eKey, eVal) {
-        var self = this, db = this._getDb(), idx;
+        var self = this, db = this.getDb(), idx;
         return db.getItem(collKey).then(function aColl (aKeys) {
             var inColl;
             idx = aKeys.indexOf(eKey);
@@ -100,6 +96,10 @@ QueryStore.prototype = {
                 return db.getItem(eKey);
             }
         });
+    },
+
+    getDb: function _getIt () {
+        return this.$localForage;
     },
 
     // Getter/Setter.
@@ -140,7 +140,7 @@ QueryStore.prototype = {
     // config([name])
     // name String
     config: function (name) {
-        var db = this._getDb();
+        var db = this.getDb();
         if (angular.isString(name)) {
             return db.setItem(this._configKey, name);
         } else if (name === null || angular.isUndefined(name)) {
@@ -154,7 +154,7 @@ QueryStore.prototype = {
     // See `#config(name)`.
     // name String
     dataset: function (name) {
-        var db = this._getDb();
+        var db = this.getDb();
         if (angular.isString(name)) {
             return db.setItem(this._datasetKey, name);
         } else if (name === null || angular.isUndefined(name)) {

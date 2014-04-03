@@ -23,14 +23,11 @@ function xml (dataset, config, filters, attributes, processor, limit, header, cl
 
     Object.keys(filters).forEach(function (fk) {
         var v = filters[fk];
-        if (v) {
-            v = filters[fk].value;
-            if (angular.isDefined(v)) {
-                if (angular.isString(v) && v.trim() === "") {
-                    return;
-                }
-                arr.push('    <Filter name="'+fk+'">'+v+'</Filter>');
+        if (angular.isDefined(v) && v !== null) {
+            if (angular.isString(v) && v.trim() === "") {
+                return;
             }
+            arr.push('    <Filter name="'+fk+'">'+v+'</Filter>');
         }
     });
 
@@ -49,39 +46,35 @@ function xml (dataset, config, filters, attributes, processor, limit, header, cl
 
 
 app.service("queryBuilder",
-         [function () {
+         ["queryStore", "$q", function (qs, $q) {
 
-    this.filters = {};
-    this.attrs = {};
-    this.xml = "";
+    // this.setFilter = function (name, value) {
+    //     this.filters[name] = value;
+    // };
 
-    this.setFilter = function (name, value) {
-        this.filters[name] = value;
-    };
+    // this.setAttribute = function (name, value) {
+    //     this.attrs[name] = value;
+    // };
 
-    this.setAttribute = function (name, value) {
-        this.attrs[name] = value;
-    };
-
-    this.build = function (dataset, config) {
+    this.build = function () {
         var limit = -1, header = true, client = "true";
-        return this.xml = xml(dataset, config, this.filters, this.attrs, "TSV", limit, header, client);
+        return this._mkQuery("TSV", limit, header, client);
     };
 
-    this.show = function (dataset, config) {
+    this._mkQuery = function (proc, limit, header, client) {
+        return $q.all({
+            config: qs.config(),
+            dataset: qs.dataset(),
+            filters: qs.allFilters(),
+            attrs: qs.allAttrs()
+        }).then(function (els) {
+            return xml(els.dataset, els.config, els.filters, els.attrs, proc, limit, header, client);
+        });
+    };
+
+    this.show = function () {
         var limit = -1, header = true, client = "false";
-        return this.xml = xml(dataset, config, this.filters, this.attrs, "TSV", limit, header, client);
-    };
-
-    this.getXml = function () {
-        return this.xml;
-    };
-
-    this.getElements = function getEls() {
-        return {
-            filters: this.filters,
-            attributes: this.attrs
-        };
+        return this._mkQuery(this.ds, this.cfg, "TSV", limit, header, client);
     };
 
 }]);
