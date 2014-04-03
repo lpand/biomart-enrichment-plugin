@@ -23,7 +23,19 @@ function QueryStore($q, $loc, $localForage) {
 
 QueryStore.prototype = {
 
-    init: function () {},
+    init: function () {
+        var self = this, db = this._getDb();
+        db.getItem(this._attrKeys).then(function (val) {
+            if (!self._hasValue(val)) {
+                db.setItem(self._attrKeys, []);
+            }
+        });
+        db.getItem(this._filterKeys).then(function (val) {
+            if (!self._hasValue(val)) {
+                db.setItem(self._filterKeys, []);
+            }
+        });
+    },
 
     _filterKeys: "qs.filters",
 
@@ -33,7 +45,11 @@ QueryStore.prototype = {
 
     _datasetKey: "qs.dataset",
 
-    _getDb: function () {
+    _hasValue: function hasValue(value) {
+        return !(angular.isUndefined(value) || value === null);
+    },
+
+    _getDb: function _getIt () {
         return this.$localForage;
     },
 
@@ -47,28 +63,53 @@ QueryStore.prototype = {
         });
     },
 
-    _handleSingleParam: function (key) {
-        var db = this._getDb(), p;
-        if (angular.isString(name)) {
-            p = db.setItem(key, name);
-        } else if (name === null || angular.isUndefined(name)) {
-            p = db.removeItem(key);
-        } else {
-            p = this.$q.reject("`name` is not either a string, null or undefined: "+ name);
+    _checkName: function _ckName(name) {
+        if (!angular.isString(name)) {
+            throw new Error("`name` is not either a string, null or undefined: "+ name);
         }
-
-        return p;
     },
 
+    _param: function _slParam (key, value) {
+        var db = this._getDb();
+        return this._hasValue(name) ?
+                // create/replace it, otheiwise remove it
+                db.setItem(key, value) : db.removeItem(key);
+    },
 
+    _elem: function (collKey, eKey, eVal) {
+        var self = this, db = this._getDb(), idx;
+        return db.getItem(collKey).then(function aColl (aKeys) {
+            function rm (val) { aKeys.splice(idx, 1); }
+            function add (val) { aKeys.push(val); }
+            function update () { db.setItem(collKey, aKeys); }
+
+            // Add, remove, replace only if part of attrs or new one
+            if ((idx = aKeys.indexOf(eKey)) !== -1) {
+                return self._param(eKey, eVal).then(function (val) {
+                    // if it's removed the element
+                    if (!self._hasValue(val)) {
+                        rm(val);
+                    }
+                });
+            } else if (self._hasValue(eVal)) {
+                db.setItem(eKey, eVal).then(function (val) {
+                    add(val);
+                });
+            }
+        });
+    },
 
     // Getter/Setter.
     // If `value` is null, it will remove the filter with
     // name `name`, otherwise it will replace the value of the filter or create
     // a new entry key `name` with value `value` amongst the filters.
+    // If name isn't a string, it throws an Error.
     // name String
     // value Any
-    filter: function (name, value) {},
+    filter: function (name, value) {
+        this._checkName(name);
+        this._elem(this._filterKeys, name, value);
+    },
 
     filtersAll: function() {
         this._coll(this._filterKeys);
@@ -78,7 +119,10 @@ QueryStore.prototype = {
     // See `#filter(name, value)`.
     // name String
     // value Any
-    attr: function (name, value) {},
+    attr: function (name, value) {
+        this._checkName(name);
+        return this._elem(this._attrKeys, name, value);
+    },
 
     attrsAll: function () {
         this._coll(this._attrKeys);
@@ -88,73 +132,23 @@ QueryStore.prototype = {
     // Returns a promise.
     // If `name` is a string it'll replace or create an entry for the config
     // `name` as value, and fulfill the promise; if is null
-    // or undefined it'll remove the config entry, otherwise it rejects.
+    // or undefined it'll remove the config entry, otherwise it throws an Error.
     // config([name])
     // name String
     config: function (name) {
-        return this._handleSingleParam(this._configKey);
+        this._checkName(name);
+        return this._param(this._configKey, name);
     },
 
     // Getter/Setter.
     // See `#config(name)`.
     // name String
     dataset: function (name) {
-        return this._handleSingleParam(this._datasetKey);
+        this._checkName(name);
+        return this._param(this._datasetKey, name);
     }
 
 };
 
 
 }).call(this, angular);
-
-
-
-    // name must be a string key.
-    // returns a promise that fulfills if there is the value for this key,
-    // rejects if there is not.
-    // It reads the URL query first, then the db.
-    // read: function readFilterValue(name) {
-    //     var ctrl = this;
-    //     var def = ctrl.$q.defer();
-    //     var search = null, value;
-    //     if (angular.isString(name)) {
-    //         search = ctrl.$loc.search();
-    //         value = search[name] || ctrl.$db.getItem(name);
-    //         if (angular.isDefined(value)) {
-    //             def.resolve(value);
-    //         } else {
-    //             def.reject("no value for "+name+" key");
-    //         }
-    //     } else {
-    //         def.reject("name must be a string");
-    //     }
-
-    //     return def.promise;
-    // },
-
-    // hasName: function hasName(filter) {
-    //     return !!filter.name;
-    // },
-
-    // hasValue: function hasValue(filter) {
-    //     return angular.isDefined(filter.value) && filter.value !== null;
-    // },
-
-    // // This functions takes a Filter object representing a Biomart filter that must
-    // // have the following props:
-    // // {
-    // //     name: "string",
-    // //     value: "any"
-    // // }
-    // // Return a promise
-    // // It updates the db. If filter.value is null then it removes the filter.
-    // updateDb: function updateFilterValueDB(filter) {
-    //     var ctrl = this, value;
-    //     if (ctrl.hasName(filter)) {
-    //         if (ctrl.hasValue(filter)) {
-    //             ctrl.$db.setItem(filter.name, filter.value);
-    //         } else {
-    //             ctrl.$db.removeItem(filter.name);
-    //         }
-    //     }
-    // }
