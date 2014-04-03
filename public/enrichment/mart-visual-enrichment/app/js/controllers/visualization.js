@@ -9,19 +9,22 @@ app.controller("VisualizationCtrl",
     var ctrl = this;
 
     var tabs = qb.build().then(function (xml) {
-        bm.query(xml, {cache: false}).
-            then(function then (res) {
-                var graphs = res.data.graphs;
-                return Object.keys(graphs).map(function (tabTitle) {
-                    var g = graphs[tabTitle];
-                    return {
-                        title: tabTitle,
-                        nodes: g.nodes,
-                        edges: g.edges
-                    };
-                });
+        bm.query(xml, {
+            cache: false,
+            "Accept": "application/json,text/plain",
+            "Accept-Encoding": "compress,gzip"
+        }).then(function then (res) {
+            var graphs = res.data.graphs;
+            return Object.keys(graphs).map(function (tabTitle) {
+                var g = graphs[tabTitle];
+                return {
+                    title: tabTitle,
+                    nodes: g.nodes,
+                    edges: g.edges
+                };
             });
         });
+    });
 
     $scope.mvTabs = [];
     $scope.progressbarValue = 33;

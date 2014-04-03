@@ -29,9 +29,9 @@ app.controller("ProgressCtrl", [
                     break;
                 case ctrl.states.PROCESSING:
                     $scope.progressbarValue = 60;
+                    $interval.cancel(intPromise);
                     break;
                 case ctrl.states.TABLE:
-                    $interval.cancel(intPromise);
                     $scope.progressbarValue = 80;
                     break;
                 case ctrl.states.NETWORK:

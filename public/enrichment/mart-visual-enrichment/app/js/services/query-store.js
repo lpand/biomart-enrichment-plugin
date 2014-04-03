@@ -52,6 +52,7 @@ QueryStore.prototype = {
     _coll: function _coll(collKey) {
         var db = this.getDb(), self = this;
         return db.getItem(collKey).then(function keysFn (keys) {
+            keys || (keys = []);
             var values = keys.reduce(function pValue(m, k) {
                 m[k] = db.getItem(k);
                 return m;
@@ -77,6 +78,7 @@ QueryStore.prototype = {
         var self = this, db = this.getDb(), idx;
         return db.getItem(collKey).then(function aColl (aKeys) {
             var inColl;
+            aKeys || (aKeys = []);
             idx = aKeys.indexOf(eKey);
             inColl = idx !== -1;
 
