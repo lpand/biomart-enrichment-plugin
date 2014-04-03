@@ -56,10 +56,11 @@ QueryStore.prototype = {
     _coll: function _coll(collKey) {
         var db = this._getDb(), self = this;
         return db.getItem(collKey).then(function keysFn (keys) {
-            var values = keys.map(function pValue(k) {
-                return db.getItem(k);
-            });
-            return self.$q.all([values]);
+            var values = keys.reduce(function pValue(m, k) {
+                m[k] = db.getItem(k);
+                return m;
+            }, {});
+            return self.$q.all(values);
         });
     },
 
@@ -79,40 +80,43 @@ QueryStore.prototype = {
     _elem: function (collKey, eKey, eVal) {
         var self = this, db = this._getDb(), idx;
         return db.getItem(collKey).then(function aColl (aKeys) {
-            function rm (val) { aKeys.splice(idx, 1); }
-            function add (val) { aKeys.push(val); }
-            function update () { db.setItem(collKey, aKeys); }
+            var inColl;
+            idx = aKeys.indexOf(eKey);
+            inColl = idx !== -1;
 
-            // Add, remove, replace only if part of attrs or new one
-            if ((idx = aKeys.indexOf(eKey)) !== -1) {
-                return self._param(eKey, eVal).then(function (val) {
-                    // if it's removed the element
-                    if (!self._hasValue(val)) {
-                        rm(val);
-                    }
-                });
-            } else if (self._hasValue(eVal)) {
-                db.setItem(eKey, eVal).then(function (val) {
-                    add(val);
-                });
+            if (eVal === null && inColl) {
+                // Remove
+                aKeys.splice(idx, 1);
+                return db.removeItem(eKey);
+            } else if (angular.isDefined(eVal)) {
+                // add, replace
+                if (!inColl) {
+                    aKeys.push(eKey);
+                    db.setItem(collKey, aKeys);
+                }
+                return db.setItem(eKey, eVal);
+            } else {
+                // get
+                return db.getItem(eKey);
             }
         });
     },
 
     // Getter/Setter.
     // If `value` is null, it will remove the filter with
-    // name `name`, otherwise it will replace the value of the filter or create
+    // name `name`; if missing returns the value for that key,
+    // otherwise it will replace the value of the filter or create
     // a new entry key `name` with value `value` amongst the filters.
     // If name isn't a string, it throws an Error.
     // name String
     // value Any
     filter: function (name, value) {
         this._checkName(name);
-        this._elem(this._filterKeys, name, value);
+        return this._elem(this._filterKeys, name, value);
     },
 
-    filtersAll: function() {
-        this._coll(this._filterKeys);
+    allFilters: function() {
+        return this._coll(this._filterKeys);
     },
 
     // Getter/Setter.
@@ -124,8 +128,8 @@ QueryStore.prototype = {
         return this._elem(this._attrKeys, name, value);
     },
 
-    attrsAll: function () {
-        this._coll(this._attrKeys);
+    allAttrs: function () {
+        return this._coll(this._attrKeys);
     },
 
     // Getter/Setter
@@ -136,16 +140,28 @@ QueryStore.prototype = {
     // config([name])
     // name String
     config: function (name) {
-        this._checkName(name);
-        return this._param(this._configKey, name);
+        var db = this._getDb();
+        if (angular.isString(name)) {
+            return db.setItem(this._configKey, name);
+        } else if (name === null || angular.isUndefined(name)) {
+            return db.getItem(this._configKey);
+        } else {
+            throw new Error("`name` must be a string, null or undefined");
+        }
     },
 
     // Getter/Setter.
     // See `#config(name)`.
     // name String
     dataset: function (name) {
-        this._checkName(name);
-        return this._param(this._datasetKey, name);
+        var db = this._getDb();
+        if (angular.isString(name)) {
+            return db.setItem(this._datasetKey, name);
+        } else if (name === null || angular.isUndefined(name)) {
+            return db.getItem(this._datasetKey);
+        } else {
+            throw new Error("`name` must be a string, null or undefined");
+        }
     }
 
 };
