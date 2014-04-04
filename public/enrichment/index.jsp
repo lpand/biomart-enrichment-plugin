@@ -19,7 +19,12 @@
     <c:import url="/_head.jsp?path=../" context="/"/>
 </head>
 <body ng-app="martVisualEnrichment">
-
+    <div id="biomart-header">
+        <div class="content">
+          <c:import url="/_header.jsp?path=../" context="/"/>
+        </div>
+        <c:import url="/_context.jsp?path=../" context="/"/>
+    </div>
     <ng-view></ng-view>
 
     <script src="mart-visual-enrichment/app/lib/jquery.js"></script>
