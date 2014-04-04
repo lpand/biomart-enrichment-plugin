@@ -78,7 +78,7 @@ app.config(["$routeProvider",
 
 app.config(["$localForageProvider", function ($localForageProvider) {
     $localForageProvider.config({
-        driver      : "sessionStorage",
+        driver      : "localStorageWrapper",
         name        : "mve", // name of the database and prefix for your data
         storeName   : 'keyvaluepairs', // name of the table
         description : 'query parameters for enrichment'
