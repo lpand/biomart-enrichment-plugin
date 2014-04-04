@@ -100,7 +100,7 @@ app.directive("singleSelectUploadFilter",
             dsPromise.then(function (selected) {
                 scope.selected = selected ? selected : scope.options[0];
                 prevSelected = scope.selected;
-                $loc.search(scope.filter.function, scope.selected.name);
+                $loc.search(scope.filter.function, scope.textareaValue && scope.textareaValue !== "" ? scope.selected.name : null);
             });
             iElement.find("input").on("change", function onChange (evt) {
                 var p = putTextPromise($q, evt);
