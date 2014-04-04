@@ -4,8 +4,8 @@
 var app = angular.module("martVisualEnrichment.controllers");
 
 
-app.controller("SpeciesCtrl", ["$scope", "$location", "$route",
-    function SpeciesCtrl($scope, $loc, $route) {
+app.controller("SpeciesCtrl", ["$scope", "$location", "$route", "queryStore",
+    function SpeciesCtrl($scope, $loc, $route, qs) {
 
     var sName = $loc.search().species, species;
     for (var i = 0, len = $scope.species.length; i < len; ++i) {
@@ -21,7 +21,9 @@ app.controller("SpeciesCtrl", ["$scope", "$location", "$route",
         newS.species = species.name;
         // $loc.url("/gui/Enrichment");
         $loc.search(newS);
-        $route.reload();
+        qs.getDb().clear().then(function () {
+            $route.reload();
+        });
     };
 
     $scope.updateSpecies = this.updateSpecies;

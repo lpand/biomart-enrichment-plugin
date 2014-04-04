@@ -74,7 +74,7 @@ app.service("queryBuilder",
 
     this.show = function () {
         var limit = -1, header = true, client = "false";
-        return this._mkQuery(this.ds, this.cfg, "TSV", limit, header, client);
+        return this._mkQuery("TSV", limit, header, client);
     };
 
 }]);
