@@ -7,17 +7,22 @@
 <%@ taglib uri="/WEB-INF/bmtaglib.tld" prefix="bm" %>
 <html lang="en">
 <c:set var="currentPage" scope="request" value="Enrichment"/>
+<c:set var="currentPage" scope="request">
+  Enrichment
+</c:set>
 <head>
   <c:import url="/conf/config.jsp" context="/"/>
     <title>${labels.document_title}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="mart-visual-enrichment/app/css/bootstrap/bootstrap.mod.css">
     <link rel="stylesheet" href="mart-visual-enrichment/app/css/app.css"/>
+    <c:import url="/_head.jsp?path=../" context="/"/>
 </head>
 <body ng-app="martVisualEnrichment">
 
     <ng-view></ng-view>
 
+    <script src="mart-visual-enrichment/app/lib/jquery.js"></script>
     <script src="mart-visual-enrichment/app/lib/angular/angular.js"></script>
     <script src="mart-visual-enrichment/app/lib/angular/angular-route.js"></script>
     <script src="mart-visual-enrichment/app/lib/ui-bootstrap-tpls-0.10.0.js"></script>

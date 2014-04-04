@@ -1,26 +1,26 @@
 <div class="container">
-    <h1 class="mve-title">Enrichment</h1>
         <div class="container">
-            <div class="row">
-                <div class="mve-species col-md-8" ng-controller="SpeciesCtrl">
-                    <div class="query-buttons" ng-controller="QueryCtrl as ctrl">
-                        <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
-                        <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
-                    </div>
-                    <select class="form-control mve-select"
+            <h1 class="mve-title">Enrichment</h1>
+                <div class="mve-species row" ng-controller="SpeciesCtrl">
+                    <div class="col-md-6">
+                        <select class="form-control"
                             ng-model="selectedSpecies"
                             ng-options="s.displayName for s in species"
                             ng-change="updateSpecies(selectedSpecies)">
-                    </select>
+                        </select>
+                    </div>
+                    <div class="col-md-3"  ng-controller="QueryCtrl as ctrl">
+                        <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
+                        <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
+                    </div>
                 </div>
-            </div>
         </div>
 
         <div class="enrichment container" ng-controller="EnrichmentCtrl as enr">
 
             <!-- sets -->
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <tabset>
                         <tab active>
                             <tab-heading>
@@ -33,7 +33,7 @@
                             <tab-heading>
                                 <h3>BED File</h3>
                             </tab-heading>
-                            <div class="col-md-8"
+                            <div class="col-md-6"
                                  mv-filter="{{enr.getFilter('bed_regions')}}">
                              </div>
                              <div class="col-md-4">
@@ -49,16 +49,15 @@
 
             <!-- background -->
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <hr/>
                     <tabset type="pills" justified="true">
                         <tab>
                             <tab-heading>
-                                <span class="collapse-symbol"
-                                      ng-click="enr.onClickBackground()">
-                                    {{enr.backgroundIsCollapsed ? "+" : "–"}}
-                                </span>
                                 <h3 ng-click="enr.onClickBackground()">
+                                    <span class="collapse-symbol">
+                                        {{enr.backgroundIsCollapsed ? "+" : "–"}}
+                                    </span>
                                     Background
                                 </h3>
                             </tab-heading>
@@ -71,7 +70,7 @@
 
             <!-- cutoff and the rest -->
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <hr/>
                     <tabset type="pills" justified="true">
                         <tab>
@@ -98,7 +97,7 @@
 
             <!-- annotations -->
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <hr/>
                     <tabset type="pills" justified="true">
                         <tab>
