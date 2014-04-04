@@ -5,8 +5,8 @@ var app = angular.module("martVisualEnrichment.controllers");
 
 app.controller("QueryCtrl", QueryCtrl);
 
-QueryCtrl.$inject = [ "$scope", "$location", "$window", "queryValidator", "queryBuilder", "bmservice", "mvConfig", "$modal", "queryStore"];
-function QueryCtrl($scope, $loc, win, qv, qb, bm, config, $modal, qs) {
+QueryCtrl.$inject = [ "$scope", "$location", "$window", "queryValidator", "queryBuilder", "bmservice", "mvConfig", "$modal", "queryStore", "$route"];
+function QueryCtrl($scope, $loc, win, qv, qb, bm, config, $modal, qs, $route) {
     var ctrl = this;
 
     ctrl.win = win;
@@ -17,6 +17,7 @@ function QueryCtrl($scope, $loc, win, qv, qb, bm, config, $modal, qs) {
     ctrl.bm = bm;
     ctrl.config = config;
     ctrl.qs = qs;
+    ctrl.$route = $route;
 }
 
 QueryCtrl.prototype = {
@@ -39,6 +40,19 @@ QueryCtrl.prototype = {
     openModal: function modal(xml) {
         this.$modal.open({
             template: '<div class="modal-header"><h2>XML</h2></div><div class="modal-body"><pre><code>"'+window.escapeHtmlEntities(xml)+'"</code></pre></div>'
+        });
+    },
+
+
+    clear: function () {
+        var ctrl = this;
+        ctrl.qs.getDb().clear().then(function () {
+            var s = ctrl.$loc.search(), newS = {};
+            newS.config = s.config;
+            newS.species = s.species;
+            // $loc.url("/gui/Enrichment");
+            ctrl.$loc.search(newS);
+            ctrl.$route.reload();
         });
     },
 
