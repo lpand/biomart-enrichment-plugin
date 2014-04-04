@@ -38,6 +38,7 @@ app.controller("ProgressCtrl", [
                 case ctrl.states.ERROR:
                 case ctrl.states.DONE:
                     $scope.progressbarValue = 100;
+                    $interval.cancel(intPromise);
                     break;
             }
         });
