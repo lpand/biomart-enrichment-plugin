@@ -33,18 +33,22 @@ EnrichmentCtrl.prototype = {
         ctrl.reqs = ["cutoff", "bonferroni", "bed_regions", "sets", "background", "upstream", "downstream", "gene_type",
                      "gene_limit", "homolog", "annotation"];
         ctrl.enElementValues = ctrl.findElements(ctrl.containers);
-
-        ctrl.store.getItem("background.collapsed").then(function (c) {
-            var v = true;
-            if (c === false) { v = false; }
-            ctrl.backgroundIsCollapsed = v;
-        });
-        ctrl.store.getItem("cutoff.collapsed").then(function (c) {
-            ctrl.cutoffIsCollapsed = c || false;
-        });
-        ctrl.store.getItem("annotation.collapsed").then(function (c) {
-            ctrl.annotationIsCollapsed = c || false;
-        });
+        ctrl.backgroundIsCollapsed = ctrl.cutoffIsCollapsed = ctrl.annotationIsCollapsed = true;
+        // ctrl.store.getItem("background.collapsed").then(function (c) {
+        //     var v = true;
+        //     if (c === false) { v = false; }
+        //     ctrl.backgroundIsCollapsed = v;
+        // });
+        // ctrl.store.getItem("cutoff.collapsed").then(function (c) {
+        //     var v = true;
+        //     if (c === false) { v = false; }
+        //     ctrl.cutoffIsCollapsed = v;
+        // });
+        // ctrl.store.getItem("annotation.collapsed").then(function (c) {
+        //     var v = true;
+        //     if (c === false) { v = false; }
+        //     ctrl.annotationIsCollapsed = v;
+        // });
     },
 
     onClickBackground: function () {
