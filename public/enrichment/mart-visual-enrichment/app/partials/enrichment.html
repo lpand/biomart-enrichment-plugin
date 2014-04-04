@@ -1,23 +1,20 @@
 <div class="container">
-        <div class="container">
-            <h1 class="mve-title">Enrichment</h1>
-                <div class="mve-species row" ng-controller="SpeciesCtrl">
-                    <div class="col-md-6">
-                        <select class="form-control"
-                            ng-model="selectedSpecies"
-                            ng-options="s.displayName for s in species"
-                            ng-change="updateSpecies(selectedSpecies)">
-                        </select>
-                    </div>
-                    <div class="col-md-3"  ng-controller="QueryCtrl as ctrl">
-                        <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
-                        <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
-                    </div>
-                </div>
-        </div>
 
         <div class="enrichment container" ng-controller="EnrichmentCtrl as enr">
-
+            <h1 class="mve-title">Enrichment</h1>
+            <div class="mve-species row" ng-controller="SpeciesCtrl">
+                <div class="col-md-6">
+                    <select class="form-control"
+                        ng-model="selectedSpecies"
+                        ng-options="s.displayName for s in species"
+                        ng-change="updateSpecies(selectedSpecies)">
+                    </select>
+                </div>
+                <div class="col-md-3"  ng-controller="QueryCtrl as ctrl">
+                    <button class="btn btn-default" ng-click="ctrl.showQuery()">Get XML Query</button>
+                    <button class="btn btn-danger" ng-click="ctrl.submit()">Submit</button>
+                </div>
+            </div>
             <!-- sets -->
             <div class="row">
                 <div class="col-md-6">
@@ -75,11 +72,10 @@
                     <tabset type="pills" justified="true">
                         <tab>
                             <tab-heading>
-                                <span class="collapse-symbol"
-                                      ng-click="enr.onClickCutoff()">
-                                    {{enr.cutoffIsCollapsed ? "+" : "–"}}
-                                </span>
                                 <h3 ng-click="enr.onClickCutoff()">
+                                    <span class="collapse-symbol">
+                                        {{enr.cutoffIsCollapsed ? "+" : "–"}}
+                                    </span>
                                     Filters
                                 </h3>
                             </tab-heading>
@@ -102,11 +98,12 @@
                     <tabset type="pills" justified="true">
                         <tab>
                             <tab-heading>
-                                <span class="collapse-symbol"
-                                      ng-click="enr.onClickAnnotation()">
-                                    {{enr.annotationIsCollapsed ? "+" : "–"}}
-                                </span>
-                                <h3 ng-click="enr.onClickAnnotation()">Annotations</h3>
+                                <h3 ng-click="enr.onClickAnnotation()">
+                                    <span class="collapse-symbol">
+                                        {{enr.annotationIsCollapsed ? "+" : "–"}}
+                                    </span>
+                                    Annotations
+                                </h3>
                             </tab-heading>
                             <div class="mve-annotations" collapse="enr.annotationIsCollapsed">
                                 <div ng-repeat="a in enr.getAttributes('annotation')"

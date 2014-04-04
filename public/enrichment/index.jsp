@@ -19,11 +19,15 @@
     <c:import url="/_head.jsp?path=../" context="/"/>
 </head>
 <body ng-app="martVisualEnrichment">
-    <div id="biomart-header">
-        <div class="content">
-          <c:import url="/_header.jsp?path=../" context="/"/>
+    <div class="container">
+        <div class="row">
+            <div id="biomart-header col-md-6">
+                <div class="content">
+                  <c:import url="/_header.jsp?path=../" context="/"/>
+                </div>
+                <c:import url="/_context.jsp?path=../" context="/"/>
+            </div>
         </div>
-        <c:import url="/_context.jsp?path=../" context="/"/>
     </div>
     <ng-view></ng-view>
 

@@ -49,10 +49,14 @@ input[type=text] {
 
 
 .enrichment {
-    margin: 2em auto 3em auto;
+    margin: auto auto 3em auto;
+    padding: 2em 0em 4em 1em;
+    border: 1px solid black;
+    border-radius: 7px;
+    background-color: #fbfbfb;
 }
 
-.enrichment h1, .enrichment h2 {
+.enrichment h2 {
     text-align: center;
     margin: 100px auto 45px auto;
 }
@@ -64,7 +68,8 @@ input[type=text] {
 
 .mve-title {
     font-family: "Pacifico";
-    font-size: 3.7em;
+    text-align: center;
+    font-size: 2em;
     margin-bottom: 1em;
     color: #303030;
 }
@@ -74,14 +79,23 @@ input[type=text] {
     border-radius: 15px;
 }
 
+.mve-species {
+    margin-bottom: 2em;
+}
+
 .mve-select {
     margin: 20px auto 20px auto;
 }
 
-.mve-filter h3, .mve-filter p {
+.mve-filter h3 {
     margin-top: 1.5em;
     font-weight: bold;
     color: #2fcad8;
+}
+
+.mve-filter p {
+    margin-top: 1.5em;
+    color: #303030;
 }
 
 
