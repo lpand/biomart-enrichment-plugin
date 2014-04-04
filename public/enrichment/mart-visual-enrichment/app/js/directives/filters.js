@@ -100,6 +100,7 @@ app.directive("singleSelectUploadFilter",
             dsPromise.then(function (selected) {
                 scope.selected = selected ? selected : scope.options[0];
                 prevSelected = scope.selected;
+                $loc.search(scope.filter.function, scope.selected.name);
             });
             iElement.find("input").on("change", function onChange (evt) {
                 var p = putTextPromise($q, evt);
@@ -229,19 +230,30 @@ app.directive("singleSelectBooleanFilter", [
         templateUrl: partialsDir + "/single-select-boolean-filter.html",
         scope: {},
         link: function link(scope, elem, attrs) {
-            var prevSelected = scope.selected, fnValue;
+            var prevSelected = scope.selected, fName,
+                search = $loc.search();
             scope.filter = scope.$parent.$eval(attrs.filter);
             scope.options = scope.filter.filters;
-            // fnValue = $loc.search()[scope.filter.function];
+            if (fName = search[scope.filter.function]) {
+                qs.filter(fName).
+                    then(function (val) {
+                        for (var i = 0, len = scope.options.length; i < len; ++i) {
+                            if (scope.options[i].name === fName) {
+                                scope.setFilter(scope.options[i]);
+                                return prevSelected;
+                            }
+                        }
+                    });
+            }
             scope.setFilter = function setFilter (filter) {
                 if (filter) {
-                    $loc.search(scope.filter.function, "only");
+                    $loc.search(scope.filter.function, filter.name);
                     qs.filter(filter.name, "only");
                 }
                 if (prevSelected) {
                     qs.filter(prevSelected.name);
                 }
-                prevSelected = filter;
+                scope.selected = prevSelected = filter;
             };
 
             scope.onSelect = function select (value) {
